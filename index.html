@@ -41,7 +41,7 @@ body{font-family:"Noto Sans JP","Hiragino Sans","Meiryo",system-ui,sans-serif;ba
 .kpis>*{min-width:0}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;cursor:help;overflow:hidden}
 .kpi .l{font-size:12px;color:var(--label);display:flex;align-items:center;gap:4px}
-.kpi .l .i{display:inline-flex;width:13px;height:13px;border-radius:50%;background:var(--control);color:var(--label);font-size:10px;align-items:center;justify-content:center;font-weight:700}
+.kpi .l .i{display:inline-flex;padding:1px 6px;border-radius:8px;background:var(--control);color:var(--label);font-size:9.5px;align-items:center;justify-content:center;font-weight:700;letter-spacing:.02em;white-space:nowrap}
 .kpi .v{font-size:27px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .kpi .v small{font-size:12px;font-weight:600;color:var(--label)}
 .kpi .yoy{font-size:12px;font-weight:700;margin-top:2px}
@@ -166,7 +166,7 @@ svg rect[data-tip]:hover,svg circle[data-tip]:hover{opacity:.72}
 </style></head><body>
 <div class="wrap">
 <div class="titlebar"><h1>ブルックリンミュージアム｜経営ダッシュボード</h1>
-<div class="sub">販売実績 2021年1月〜2026年8月／金額は実売（掛率反映・下代）ベース　※デジタル庁ダッシュボードデザイン実践ガイドブック準拠</div></div>
+<div class="sub">販売実績 2021年1月〜2026年8月／金額は実際の販売額（値引き・卸掛率を反映した実売価格）ベース</div></div>
 
 <div class="tabs" id="tabs">
 <button data-t="prod" class="on">商品分析</button>
@@ -211,8 +211,8 @@ svg rect[data-tip]:hover,svg circle[data-tip]:hover{opacity:.72}
 <div class="tblwrap"><table id="tbl"><thead><tr>
 <th class="l">画像</th><th class="l hcol" data-k="品番">品番</th><th class="l" data-k="品名">品名</th>
 <th class="l" data-k="カテゴリ">カテゴリ</th><th class="l hcol" data-k="素材">素材</th>
-<th class="hcol" data-k="上代" data-tip="定価（税抜）">上代</th>
-<th data-k="実売単価" data-tip="実際に売れた1個あたり金額（下代・掛率反映後）＝売上÷数量">実売単価</th>
+<th class="hcol" data-k="上代" data-tip="定価（税抜・お客様に提示する価格）">定価</th>
+<th data-k="実売単価" data-tip="実際に売れた1個あたりの金額（値引き・卸掛率を反映した販売額）＝売上÷数量">実売単価</th>
 <th data-k="原価" data-tip="元データの最終原価（1個あたり）">原価</th>
 <th data-k="粗利率" data-tip="（実売単価−原価）÷実売単価">粗利率</th>
 <th id="sparkhd">年別販売数</th>
@@ -313,9 +313,9 @@ svg rect[data-tip]:hover,svg circle[data-tip]:hover{opacity:.72}
 
 
 <div class="foot">出所：ブルックリンミュージアム SKU売上実績 2021–2026（元データ17,378明細）・同「期別月別全体実績」「提出用_広告履歴」シート／集計：B Supply　2026年8月<br>
-※金額＝実売（下代・掛率反映）。決算期は決算書P/L期間に一致（45期 令4/7/21–令5/7/20、46期 令5/7/21–令6/6/30〔約11.3ヶ月〕、47期 令6/7/1–令7/6/30。44・48期はSKUデータから同ルールで算出）。本表の金額はSKU下代合計で、決算P/Lの会計上の売上高とは基準が異なります。<br>
+※金額＝実際の販売額（定価に値引き・卸掛率を反映した実売価格の合計）。決算期は決算書P/L期間に一致（45期 令4/7/21–令5/7/20、46期 令5/7/21–令6/6/30〔約11.3ヶ月〕、47期 令6/7/1–令7/6/30。44・48期はSKUデータから同ルールで算出）。本表の金額はSKU販売額合計で、決算P/Lの会計上の売上高とは基準が異なります。<br>
 ※セグメント・広告タブは売主管理シートの数値をそのまま表示（商品分析タブとは集計基準が異なるため合計は一致しません）。判定（元データには無いB Supplyの独自分類・直近2年=2025〜2026年の販売数で判定）：<b>販売中</b>=6個以上／<b>低回転</b>=1〜5個／<b>休眠</b>=0個。商品画像は公式サイトから品番・商品名一致で検証し全190枚を目視確認したもののみ表示（要ネット接続）。<br>
-※UI：デジタル庁「ダッシュボードデザインの実践ガイドブックとデザインテンプレート」のカラーパレット・カード/KPI/チャート規約を参考に実装</div>
+</div>
 </div>
 <div id="ov"><div class="modal" id="modal"></div></div>
 <script>
@@ -326,11 +326,22 @@ const M=n=>(n/1e6).toFixed(1)+'M';
 let mode='cal', period='all', sortK='累計売上', sortA=false, fj='all';
 /* tooltip */
 const tip=document.createElement('div');tip.className='floatip';document.body.appendChild(tip);
-function showTip(el){const t=el.getAttribute('data-tip');if(!t)return;const r=el.getBoundingClientRect();tip.textContent=t;tip.style.left=Math.min(r.left+scrollX,scrollX+innerWidth-280)+'px';tip.style.top=(r.bottom+scrollY+6)+'px';tip.classList.add('on');}
-function hideTip(){tip.classList.remove('on');}
-document.addEventListener('mouseover',e=>{const el=e.target.closest('[data-tip]');if(el)showTip(el);});
-document.addEventListener('mouseout',e=>{if(e.target.closest('[data-tip]'))hideTip();});
-document.addEventListener('click',e=>{const el=e.target.closest('[data-tip]');if(el&&!e.target.closest('a')){tip.classList.contains('on')?hideTip():showTip(el);}else hideTip();},true);
+const canHover=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+let tipTarget=null;
+function showTip(el){const t=el.getAttribute('data-tip');if(!t)return;const r=el.getBoundingClientRect();tip.textContent=t;tip.style.left=Math.min(r.left+scrollX,scrollX+innerWidth-280)+'px';tip.style.top=(r.bottom+scrollY+6)+'px';tip.classList.add('on');tipTarget=el;}
+function hideTip(){tip.classList.remove('on');tipTarget=null;}
+if(canHover){
+ document.addEventListener('mouseover',e=>{const el=e.target.closest('[data-tip]');if(el)showTip(el);});
+ document.addEventListener('mouseout',e=>{if(e.target.closest('[data-tip]'))hideTip();});
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-tip]');
+ if(el&&!e.target.closest('a')){
+  if(tipTarget===el){hideTip();}else{showTip(el);}
+ }else{
+  hideTip();
+ }
+},true);
 /* tabs */
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
@@ -352,7 +363,7 @@ function periodSummary(){
  const fp=+period.slice(1);const s=D.fiscsummary.find(r=>r.fp===fp);const pr=D.fiscsummary.find(r=>r.fp===fp-1);return {...s,yoy:pr?((s.uri/pr.uri-1)*100):null};
 }
 function yoyHtml(v){if(v===null||!isFinite(v))return '<span class="muted">—</span>';return `<span class="yoyc ${v>=0?'up':'down'}">${v>=0?'▲':'▼'}${Math.abs(v).toFixed(0)}%</span>`;}
-function kpi(l,v,tp,yoy){return `<div class="kpi" data-tip="${tp||''}"><div class="l">${l}${tp?'<span class="i">?</span>':''}</div><div class="v">${v}</div>${typeof yoy==='number'&&isFinite(yoy)?`<div class="yoy ${yoy>=0?'up':'down'}">${yoy>=0?'▲':'▼'}${Math.abs(yoy).toFixed(0)}% 前期比</div>`:''}</div>`;}
+function kpi(l,v,tp,yoy){return `<div class="kpi" data-tip="${tp||''}"><div class="l">${l}${tp?'<span class="i">定義</span>':''}</div><div class="v">${v}</div>${typeof yoy==='number'&&isFinite(yoy)?`<div class="yoy ${yoy>=0?'up':'down'}">${yoy>=0?'▲':'▼'}${Math.abs(yoy).toFixed(0)}% 前期比</div>`:''}</div>`;}
 function renderPeriodBtns(){
  const seg=document.getElementById('pseg');
  seg.innerHTML=`<button data-p="all" class="${period==='all'?'on':''}">全期間</button>`+
@@ -366,7 +377,7 @@ function renderKPI(){
    kpi('販売中',s.販売中+'<small> 品番</small>','直近2年（暦年2025〜2026）の販売数が6個以上'),
    kpi('低回転',s.低回転+'<small> 品番</small>','直近2年の販売数が1〜5個'),
    kpi('休眠',s.休眠+'<small> 品番</small>','直近2年の販売数が0個＝在庫滞留リスク'),
-   kpi('総売上',M(s.総売上),'実売（下代）の累計。2021年1月〜2026年8月・返品含む'),
+   kpi('総売上',M(s.総売上),'実際の販売額（定価に値引き・卸掛率を反映）の累計。2021年1月〜2026年8月・返品含む'),
    kpi('総原価',M(s.総原価),'最終原価×販売数の累計'),
    kpi('総粗利',M(s.総粗利)+'<small> ('+s.平均粗利率+'%)</small>','総売上−総原価')].join('');
  }else{const s=periodSummary();const isf=mode==='fisc';const fp=isf?+period.slice(1):null;
@@ -374,7 +385,7 @@ function renderKPI(){
   const range=isf?('<small> '+FM[fp].start.slice(2).replace(/-/g,'/')+'〜'+FM[fp].end.slice(2).replace(/-/g,'/')+'</small>'):(period==='2026'?'<small> (1〜8月)</small>':'');
   box.innerHTML=[kpi('対象期',sub+range,isf?('決算期。'+(FM[fp].hasdoc?'決算書で期間確認済':'*決算書なし・SKUデータから算出')):'選択中の暦年'),
    kpi('販売品番',(isf?P.filter(p=>p['qf'+fp]>0).length:P.filter(p=>p['q'+(+period)]>0).length)+'<small> 品番</small>','その期に1個以上売れた品番数'),
-   kpi('売上',M(s.uri),'その期の実売（下代）売上',s.yoy),
+   kpi('売上',M(s.uri),'その期の実際の販売額（値引き・卸掛率反映後）',s.yoy),
    kpi('原価',M(s.cost),'その期の最終原価合計'),
    kpi('粗利',M(s.gp)+'<small> ('+s.margin+'%)</small>','その期の売上−原価'),
    kpi('販売数量',s.qty.toLocaleString()+'<small> 個</small>','その期の販売数量（返品差引後）')].join('');
@@ -464,11 +475,11 @@ function openD(p){const price=p.実売単価||1;const gp=price-p.原価;const cp
  <h3>${p.品名}</h3><div class="sub">品番 ${p.品番}｜${p.カテゴリ}｜${p.素材}　<span class="badge ${p.判定=='休眠'?'b-sl':p.判定=='低回転'?'b-amb':'b-live'}">${p.判定}</span></div>
  ${p.img?`<img class="mimg" src="${p.img}" alt="${p.品名}" style="margin-top:10px" onerror="this.style.display='none'">`:''}
  <div class="wf"><div class="note">価格の内訳（実売単価 ＝ 原価 ＋ 粗利）</div>
- ${p.上代?`<div class="wfrow"><span>上代(定価)</span><div class="wfbar"><span style="width:100%;background:var(--c5)"></span></div><b>${yen(p.上代)}</b></div>`:''}
+ ${p.上代?`<div class="wfrow"><span>定価</span><div class="wfbar"><span style="width:100%;background:var(--c5)"></span></div><b>${yen(p.上代)}</b></div>`:''}
  <div class="wfrow"><span>実売単価</span><div class="wfbar"><span style="width:${p.上代?(p.実売単価/p.上代*100):100}%;background:var(--c1)"></span></div><b>${yen(p.実売単価)}</b></div>
  <div class="wfrow"><span>├ 原価</span><div class="wfbar"><span style="width:${cpct}%;background:var(--gray9)"></span></div><b>${yen(p.原価)} <small style="color:var(--label)">${cpct.toFixed(0)}%</small></b></div>
  <div class="wfrow"><span>└ 粗利</span><div class="wfbar"><span style="width:${Math.max(0,gpct)}%;background:var(--c2)"></span></div><b>${yen(gp)} <small style="color:var(--label)">${p.粗利率}%</small></b></div>
- ${disc?`<div class="note">※ 上代比 約${disc}% の掛率／値引きで実売</div>`:''}</div>
+ ${disc?`<div class="note">※ 定価比 約${disc}% の掛率／値引きで実際に販売</div>`:''}</div>
  <div class="note">${mode==='cal'?'暦年別':'決算期別'} 販売数量（下：売上）</div>
  <div class="yr2">${unitList().map(u=>{const q=mode==='cal'?p['q'+u]:p['qf'+u];const uu=mode==='cal'?p['u'+u]:p['uf'+u];return `<div class="c"><b>${q}</b><em>${uu?M(uu):'—'}</em><span>${uLabel(u)}</span></div>`;}).join('')}</div>
  <div class="note" style="margin-top:12px">累計：売上 ${yen(p.累計売上)}／数量 ${p.累計数量.toLocaleString()}個／粗利 ${yen(p.累計粗利)}</div>`;
