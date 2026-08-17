@@ -109,7 +109,7 @@ svg text{fill:#626264;font-size:10px;font-family:inherit}
 .progbar>span{position:absolute;left:0;top:0;height:100%;border-radius:4px}
 .progbar .tgt{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--neg)}
 /* competitor */
-.compgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.compgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:12px}
 .brandcard{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:var(--card)}
 .brandcard h3{font-size:13.5px;font-weight:700}
 .brandcard h3 a{color:var(--link);text-decoration:none}
@@ -172,6 +172,7 @@ svg rect[data-tip]:hover,svg circle[data-tip]:hover{opacity:.72}
 <button data-t="prod" class="on">商品分析</button>
 <button data-t="seg">セグメント・広告</button>
 <button data-t="comp">競合分析</button>
+<button data-t="fin">示唆・提言</button>
 </div>
 
 <!-- ============ TAB1 商品分析 ============ -->
@@ -244,6 +245,73 @@ svg rect[data-tip]:hover,svg circle[data-tip]:hover{opacity:.72}
 <!-- ============ TAB3 競合分析 ============ -->
 <div id="tab-comp" style="display:none"></div>
 
+<!-- ============ TAB4 示唆・提言 ============ -->
+<div id="tab-fin" style="display:none">
+
+<div class="kpis">
+<div class="kpi"><div class="l">総合</div><div class="v" style="font-size:15px;line-height:1.5">商品力は本物。<br>売り方に伸びしろ</div></div>
+<div class="kpi"><div class="l">価格</div><div class="v" style="font-size:15px;line-height:1.5">2品に値上げ余地<br><small>カードケース・ベルシー</small></div></div>
+<div class="kpi"><div class="l">利益の源泉</div><div class="v" style="font-size:15px;line-height:1.5">財布・小物・特注<br><small>粗利76〜93%</small></div></div>
+<div class="kpi"><div class="l">売り方の空白</div><div class="v" style="font-size:15px;line-height:1.5">保証・刻印・<br>レビュー・会員</div></div>
+</div>
+
+<div class="card">
+<h2>数字からわかったこと <span class="tag">商品分析・セグメント・広告タブの要点（クリックで各タブに移動して確認できます）</span></h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:12px">
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">1. 売上は5年で約1.7倍に成長</b><br>
+<span style="font-size:12px">暦年2021年 65.4M → 2025年 110.3M。牽引は卸・OEMで、店舗・ECは緩やかな成長。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">2. 「売上の伸び」と「利益の源泉」が別の場所にある</b><br>
+<span style="font-size:12px">利益は財布・小物（粗利76〜93%）と特注（89%）が稼ぎ、伸びているOEMは粗利36%と薄い。伸ばす所と稼ぐ所を分けて設計する必要。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">3. 同じ商品でも販路で採算が激変</b><br>
+<span style="font-size:12px">ミニスナップウォレットは小売粗利74〜81%に対しOEM17%。キーホルダーのOEMは原価割れ（△9.1%）。OEM価格・受注条件の見直し余地。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">4. 563品番のうち228品番が直近2年販売ゼロ（休眠）</b><br>
+<span style="font-size:12px">定番への集中と在庫整理の余地が大きい。売上の約9割は上位221品番で作られている。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">5. 季節は6月・12月の二山（ギフト期）</b><br>
+<span style="font-size:12px">この2ヶ月に販促・在庫仕込み・刻印/ラッピング体制を集中させるのが効率的。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">6. 2025年度は目標150Mに対し95M（達成率63%）</b><br>
+<span style="font-size:12px">ギャップが最も大きいのは卸（目標60Mに対し31.6M＝53%）。EC66%・店舗74%。目標側の精度も含めた見直し材料。</span></div>
+<div style="border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+<b style="color:var(--hl)">7. SNS広告は対EC売上9.6%と規律的</b><br>
+<span style="font-size:12px">累計広告費13.2Mに対しEC売上136.6M。広告を増やすより、LINE・会員化などCRM側に伸びしろ。</span></div>
+</div>
+</div>
+
+<div class="card">
+<h2>価格の方向性 <span class="tag">競合9社59商品の実売価格と自社の粗利構造から試算（詳細は競合分析タブ）</span></h2>
+<div class="tblwrap"><table style="min-width:760px">
+<tr><th>方向</th><th class="l">商品（現行税込）</th><th class="l">提案</th><th class="l">根拠と利益中立ライン</th></tr>
+<tr><td><span class="badge b-live">値上げ</span></td><td class="l">コンパクトカードケース 17,600</td><td class="l"><b>19,800〜22,000</b>（+13〜25%）</td><td class="l">競合中央値△20%。値上げ13%なら販売数▲12%まで利益維持</td></tr>
+<tr><td><span class="badge b-live">値上げ</span></td><td class="l">ベルシートート 96,800</td><td class="l"><b>110,000前後</b>（+14%）</td><td class="l">競合中央値△27%。土屋鞄115,500・ACATE121,000の直下まで可</td></tr>
+<tr><td><span class="badge" style="background:var(--control);color:var(--label)">維持</span></td><td class="l">ロワイヤルM 132,000／Lジップ 66,000</td><td class="l">現行維持</td><td class="l">中央値±0%／+3%＝適正圏</td></tr>
+<tr><td><span class="badge b-amb">要検討</span></td><td class="l">二つ折り 55,000／ミニインター 44,000</td><td class="l">価格は守り、訴求強化／エントリー品新設</td><td class="l">中央値+25〜33%。値下げ10%は販売数+17%必要で不利</td></tr>
+</table></div>
+<div class="note">値下げを勧めない理由：粗利構造上、値上げ10%は数量▲10〜15%まで利益中立だが、値下げ10%は数量+14〜21%増が必要。価格を下げるより「価格の根拠」（保証・刻印・物語）を厚くする方が利益に直結。改定は繁忙期前（5月・11月）に、販路別の掛率・値引きルール整備とセットで。</div>
+</div>
+
+<div class="card">
+<h2>売り方の学びと打ち手 <span class="tag">競合9社のEC施策・SNS実地調査（2026年8月）にもとづく優先順</span></h2>
+<div class="tblwrap"><table style="min-width:800px">
+<tr><th>優先</th><th class="l">打ち手</th><th class="l">競合の実例（確認済み）</th><th class="l">初期コスト感</th></tr>
+<tr><td class="c"><b>1</b></td><td class="l"><b>保証の制度化</b>：修理力を「保証＋永年修理相談」として商品ページに明記</td><td class="l">BONAVENTURA＝30日/2年/ライフタイムの3層。HushTug＝永年修理＋料金全公開。土屋鞄＝永久サポート4本柱</td><td class="l">ほぼ表現整理のみ</td></tr>
+<tr><td class="c"><b>2</b></td><td class="l"><b>カードケース・ベルシーの価格改定</b>（上表）</td><td class="l">競合実売とのギャップ2〜3割</td><td class="l">EC表示・タグ・掛率の同時切替</td></tr>
+<tr><td class="c"><b>3</b></td><td class="l"><b>EC刻印サービスの明文化</b>：料金・納期を商品ページに明示</td><td class="l">BONAVENTURA＝無料刻印を細分明示。FUJITAKA＝EC限定無料刻印＋百貨店イベント連動</td><td class="l">小（運用設計）</td></tr>
+<tr><td class="c"><b>4</b></td><td class="l"><b>藍染めエイジングのUGCハブ化</b>：ハッシュタグ＋リポスト運用から</td><td class="l">GANZO＝経年変化専用Instagram（約1.8万人）で顧客の「育てた革」を可視化</td><td class="l">小（運用のみ）</td></tr>
+<tr><td class="c"><b>5</b></td><td class="l"><b>レビュー機能の導入</b></td><td class="l">表示は9社中HushTugのみ（星4.6・43件）＝空白地帯。AI検索経由の推薦にも有効</td><td class="l">アプリ導入 月数千円</td></tr>
+<tr><td class="c"><b>6</b></td><td class="l"><b>休眠228品番の在庫整理と定番集中</b></td><td class="l">―（自社データより）</td><td class="l">セール/アウトレット設計</td></tr>
+<tr><td class="c"><b>7</b></td><td class="l"><b>OEM採算の見直し</b>：原価割れ品の価格改定・受注基準</td><td class="l">―（自社データより：キーホルダー等）</td><td class="l">取引先との交渉</td></tr>
+</table></div>
+<div class="note">※ 詳細な比較・出典は「競合分析」タブおよび別紙「価格と売り方の競合比較レポート」参照。SNSフォロワー等の概数は調査時点のもの。</div>
+</div>
+
+</div>
+
+
 <div class="foot">出所：ブルックリンミュージアム SKU売上実績 2021–2026（元データ17,378明細）・同「期別月別全体実績」「提出用_広告履歴」シート／集計：B Supply　2026年8月<br>
 ※金額＝実売（下代・掛率反映）。決算期は決算書P/L期間に一致（45期 令4/7/21–令5/7/20、46期 令5/7/21–令6/6/30〔約11.3ヶ月〕、47期 令6/7/1–令7/6/30。44・48期はSKUデータから同ルールで算出）。本表の金額はSKU下代合計で、決算P/Lの会計上の売上高とは基準が異なります。<br>
 ※セグメント・広告タブは売主管理シートの数値をそのまま表示（商品分析タブとは集計基準が異なるため合計は一致しません）。判定（販売中/低回転/休眠）はB Supplyの分類。商品画像は公式サイトから品番・商品名一致で検証し全190枚を目視確認したもののみ表示（要ネット接続）。<br>
@@ -266,7 +334,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-tip]');if
 /* tabs */
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
- ['prod','seg','comp'].forEach(t=>document.getElementById('tab-'+t).style.display=(b.dataset.t===t?'':'none'));
+ ['prod','seg','comp','fin'].forEach(t=>document.getElementById('tab-'+t).style.display=(b.dataset.t===t?'':'none'));
 });
 /* ===== TAB1: 商品分析（既存ロジック） ===== */
 function unitList(){return mode==='cal'?Y.slice():FPS.slice();}
