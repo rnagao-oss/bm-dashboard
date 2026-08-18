@@ -448,7 +448,7 @@ function render(){
  rows.sort((a,b)=>{let x,y;if(sortK==='_qty'){x=pm(a).qty;y=pm(b).qty;}else if(sortK==='_uri'){x=pm(a).uri;y=pm(b).uri;}else if(sortK==='_yoy'){x=pm(a).yoy??-9999;y=pm(b).yoy??-9999;}else{x=a[sortK];y=b[sortK];}if(typeof x==='string')return sortA?(''+x).localeCompare(y):(''+y).localeCompare(x);return sortA?x-y:y-x;});
  document.getElementById('cnt').textContent=rows.length+' 品番'+(period==='all'?'':`（${pLabelFull()}に販売）`);
  document.getElementById('tb').innerHTML=rows.slice(0,400).map(p=>{const cls=p.判定=='休眠'?'slp':(p.判定=='低回転'?'amb':'');const bd=p.判定=='休眠'?'b-sl':(p.判定=='低回転'?'b-amb':'b-live');const mw=Math.max(0,Math.min(100,p.粗利率));const mt=pm(p);const th=p.img?`<img class="thumb" loading="lazy" src="${p.img}" alt="" onerror="this.style.visibility='hidden'">`:`<span class="noimg"></span>`;
-  return `<tr class="${cls}" data-i="${P.indexOf(p)}"><td class="l">${th}</td><td class="l pn hcol">${p.品番}</td><td class="l"><span class="pname" title="${p.品名}">${p.品名}</span></td><td class="l">${p.カテゴリ}</td><td class="l pn hcol">${p.素材}</td><td class="muted hcol">${p.上代?yen(p.上代):'—'}</td><td class="muted">${yen(p.実売単価)}</td><td class="muted">${yen(p.原価)}</td><td><span class="mgcell"><span class="mgbar"><span style="width:${mw}%"></span></span>${p.粗利率}%</span></td><td>${spark(p)}</td><td class="muted">${mt.qty.toLocaleString()}</td><td class="muted">${M(mt.uri)}</td><td>${period==='all'?'<span class="muted">—</span>':yoyHtml(mt.yoy)}</td><td><span class="badge ${bd}">${p.判定}</span></td></tr>`;
+  return `<tr class="${cls}" data-i="${P.indexOf(p)}"><td class="l">${th}</td><td class="l pn hcol">${p.品番}</td><td class="l"><span class="pname" title="${p.品名}">${p.品名}</span></td><td class="l">${p.カテゴリ}</td><td class="l pn hcol">${p.素材}</td><td class="muted hcol">${p.上代&&p.カテゴリ!=='特注'?yen(p.上代):'—'}</td><td class="muted">${yen(p.実売単価)}</td><td class="muted">${yen(p.原価)}</td><td><span class="mgcell"><span class="mgbar"><span style="width:${mw}%"></span></span>${p.粗利率}%</span></td><td>${spark(p)}</td><td class="muted">${mt.qty.toLocaleString()}</td><td class="muted">${M(mt.uri)}</td><td>${period==='all'?'<span class="muted">—</span>':yoyHtml(mt.yoy)}</td><td><span class="badge ${bd}">${p.判定}</span></td></tr>`;
  }).join('')+(rows.length>400?`<tr><td colspan="14" class="foot">上位400件を表示（該当${rows.length}件）</td></tr>`:'');
 }
 function setPeriod(p){period=(''+p);
@@ -470,15 +470,15 @@ document.querySelectorAll('#tbl th[data-k]').forEach(th=>th.onclick=()=>{const k
 document.getElementById('q').oninput=render;document.getElementById('fcat').onchange=render;document.getElementById('fmat').onchange=render;
 document.querySelectorAll('#fseg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#fseg button').forEach(x=>x.className='');b.className='on'+(b.dataset.v=='休眠'?' sl':b.dataset.v=='低回転'?' amb':'');fj=b.dataset.v;render();});
 document.getElementById('tb').onclick=e=>{const tr=e.target.closest('tr[data-i]');if(!tr)return;openD(P[+tr.dataset.i]);};
-function openD(p){const price=p.実売単価||1;const gp=price-p.原価;const cpct=(p.原価/price*100),gpct=(gp/price*100);const disc=p.上代&&p.上代>p.実売単価?((1-p.実売単価/p.上代)*100).toFixed(0):null;
+function openD(p){const price=p.実売単価||1;const gp=price-p.原価;const cpct=Math.min(100,p.原価/price*100),gpct=Math.min(100,Math.max(0,gp/price*100));const showPrice=p.上代&&p.カテゴリ!=='特注';const disc=showPrice&&p.上代>p.実売単価?((1-p.実売単価/p.上代)*100).toFixed(0):null;
  document.getElementById('modal').innerHTML=`<span class="close" onclick="document.getElementById('ov').classList.remove('on')">×</span>
  <h3>${p.品名}</h3><div class="sub">品番 ${p.品番}｜${p.カテゴリ}｜${p.素材}　<span class="badge ${p.判定=='休眠'?'b-sl':p.判定=='低回転'?'b-amb':'b-live'}">${p.判定}</span></div>
  ${p.img?`<img class="mimg" src="${p.img}" alt="${p.品名}" style="margin-top:10px" onerror="this.style.display='none'">`:''}
  <div class="wf"><div class="note">価格の内訳（実売単価 ＝ 原価 ＋ 粗利）</div>
- ${p.上代?`<div class="wfrow"><span>定価</span><div class="wfbar"><span style="width:100%;background:var(--c5)"></span></div><b>${yen(p.上代)}</b></div>`:''}
- <div class="wfrow"><span>実売単価</span><div class="wfbar"><span style="width:${p.上代?(p.実売単価/p.上代*100):100}%;background:var(--c1)"></span></div><b>${yen(p.実売単価)}</b></div>
+ ${showPrice?`<div class="wfrow"><span>定価</span><div class="wfbar"><span style="width:100%;background:var(--c5)"></span></div><b>${yen(p.上代)}</b></div>`:''}
+ <div class="wfrow"><span>実売単価</span><div class="wfbar"><span style="width:${showPrice?Math.min(100,p.実売単価/p.上代*100):100}%;background:var(--c1)"></span></div><b>${yen(p.実売単価)}</b></div>
  <div class="wfrow"><span>├ 原価</span><div class="wfbar"><span style="width:${cpct}%;background:var(--gray9)"></span></div><b>${yen(p.原価)} <small style="color:var(--label)">${cpct.toFixed(0)}%</small></b></div>
- <div class="wfrow"><span>└ 粗利</span><div class="wfbar"><span style="width:${Math.max(0,gpct)}%;background:var(--c2)"></span></div><b>${yen(gp)} <small style="color:var(--label)">${p.粗利率}%</small></b></div>
+ <div class="wfrow"><span>└ 粗利</span><div class="wfbar"><span style="width:${gpct}%;background:var(--c2)"></span></div><b>${yen(gp)} <small style="color:var(--label)">${p.粗利率}%</small></b></div>
  ${disc?`<div class="note">※ 定価比 約${disc}% の掛率／値引きで実際に販売</div>`:''}</div>
  <div class="note">${mode==='cal'?'暦年別':'決算期別'} 販売数量（下：売上）</div>
  <div class="yr2">${unitList().map(u=>{const q=mode==='cal'?p['q'+u]:p['qf'+u];const uu=mode==='cal'?p['u'+u]:p['uf'+u];return `<div class="c"><b>${q}</b><em>${uu?M(uu):'—'}</em><span>${uLabel(u)}</span></div>`;}).join('')}</div>
