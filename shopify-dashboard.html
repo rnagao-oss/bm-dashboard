@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>BROOKLYN MUSEUM Shopify 経営ダッシュボード</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--line:#e3e5e9;--ink:#1a1c22;--muted:#6b7280;
+--accent:#2563eb;--accent2:#0891b2;--warn:#b45309;--bad:#b91c1c;--good:#15803d;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+background:var(--bg);color:var(--ink);font-size:14px;line-height:1.68}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:22px;margin:0 0 4px;font-weight:800}
+.sub{color:var(--muted);font-size:12.5px}
+.callout{border-radius:9px;padding:13px 17px;margin:16px 0;font-size:12.8px}
+.callout.info{background:#eff6ff;border:1px solid #93c5fd;color:#1e3a5f}
+.callout.alert{background:#fef2f2;border:1px solid #fca5a5;color:#7f1d1d}
+h2.sec{font-size:16.5px;font-weight:800;margin:38px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+h2.sec .tag{font-weight:400;font-size:11.5px;color:var(--muted);margin-left:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.kpi .l{font-size:11.3px;color:var(--muted);margin-bottom:5px;line-height:1.45}
+.kpi .v{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.kpi .d{font-size:11px;margin-top:4px;color:var(--muted)}
+.kpi .d.up{color:var(--good);font-weight:700} .kpi .d.down{color:var(--bad);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:19px 21px;margin-bottom:14px}
+.card h3{font-size:13.5px;margin:0 0 4px;font-weight:800}
+.card .desc{font-size:12.2px;color:var(--muted);margin-bottom:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:840px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:12.4px}
+th{text-align:left;padding:7px 8px;border-bottom:2px solid var(--ink);color:var(--muted);font-weight:700;font-size:11px}
+td{padding:7px 8px;border-bottom:1px solid var(--line)}
+tr:hover td{background:#fafbfc}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.hl-bad{background:#fef2f2} .hl-good{background:#f0fdf4}
+.tblwrap{overflow-x:auto}
+.bar-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.bar-label{width:130px;font-size:11.5px;flex-shrink:0}
+.bar-track{flex:1;background:#eef0f3;border-radius:4px;height:15px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px}
+.bar-val{font-size:11px;width:105px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:17px 19px;margin-bottom:12px}
+.plan .hd{display:flex;align-items:baseline;gap:9px;margin-bottom:9px}
+.plan .no{font-size:17px;font-weight:800;color:var(--accent)}
+.plan .nm{font-size:14.5px;font-weight:800}
+.plan .row{display:flex;gap:9px;font-size:12.3px;margin:5px 0;align-items:flex-start}
+.plan .k{flex-shrink:0;width:74px;color:var(--muted);font-weight:700;font-size:11.3px;padding-top:1px}
+.money{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:11px 0 3px}
+.money div{border:1px solid var(--line);border-radius:7px;padding:8px 10px;text-align:center}
+.money .lab{font-size:10.5px;color:var(--muted)}
+.money .num{font-size:16px;font-weight:800;margin-top:2px}
+.money .std{background:#eff6ff;border-color:#93c5fd}
+.chartsvg{width:100%;height:auto;display:block}
+.foot{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.85}
+.lead{font-size:13.5px;background:var(--card);border-left:4px solid var(--accent);
+border-radius:0 9px 9px 0;padding:15px 19px;margin-bottom:16px}
+.lead b{color:var(--accent)}
+</style></head><body><div class="wrap">
+
+<h1>BROOKLYN MUSEUM &nbsp;Shopify 経営ダッシュボード</h1>
+<div class="sub">対象：2021年8月〜2026年8月／Shopify管理画面 ストア分析（ShopifyQL）より取得／金額は値引き後・税抜の純売上高</div>
+
+<div class="callout info">
+<b>データの位置づけ：</b>本ダッシュボードのShopifyデータは、同社の決算書とほぼ一致することを確認しました。
+直近12ヶ月の<b>EC 24.15M円</b>（決算書48期のEC売上 23.3百万円）、
+<b>実店舗POS 34.43M円</b>（同 店舗売上 34.2百万円）。
+ストア名の「test-」は表示上の名称であり、中身は本番の実データです。
+なお卸売（決算書48期 29.6百万円）はShopifyを経由していないため、本ダッシュボードには含まれません。
+</div>
+
+<div class="lead">
+<b>結論：</b>この1年でサイト訪問者は倍増（155,696→311,829セッション）したのに、EC売上は-7.4%減りました。
+原因は明確で、増えた分のほぼ全てがInstagram経由の流入であり、その流入の購入率が<b>0.011%</b>（1万人来て1人買う水準）だからです。
+一方でダイレクト流入は0.816%、メールは2.20%で購入しています。
+<b>この「来ているのに買われていない17.6万セッション」をどう扱うかが、最大かつ最優先の論点</b>です。
+下段の施策①〜⑥を実行した場合、EC売上は年24.15M円から
+<b>45.33M円（標準ケース・+88%）</b>まで伸びる余地があると試算しています。
+</div>
+<h2 class="sec">現状のKPI <span class="tag">直近12ヶ月（2025年9月〜2026年8月）と前年同期の比較</span></h2>
+<div class="kpis">
+<div class="kpi"><div class="l">EC純売上</div><div class="v">24.15M円</div><div class="d down">前年同期比 -7.4%</div></div>
+<div class="kpi"><div class="l">EC注文数</div><div class="v">821件</div><div class="d down">-9.5%</div></div>
+<div class="kpi"><div class="l">EC平均客単価</div><div class="v">¥29,412</div><div class="d up">+2.3%</div></div>
+<div class="kpi"><div class="l">サイト訪問（セッション）</div><div class="v">311,829</div><div class="d up">+100.3%</div></div>
+<div class="kpi"><div class="l">購入転換率</div><div class="v">0.263%</div><div class="d down">前年 0.583% から半減</div></div>
+<div class="kpi"><div class="l">実店舗POS売上</div><div class="v">34.43M円</div><div class="d">客単価 ¥50,338</div></div>
+<div class="kpi"><div class="l">EC構成比</div><div class="v">41.2%</div><div class="d">Shopify計上分に占める割合</div></div>
+<div class="kpi"><div class="l">Instagram流入の転換率</div><div class="v" style="color:var(--bad)">0.011%</div><div class="d">ダイレクトの1/74</div></div>
+</div>
+<div class="callout alert">
+<b>最も重大な発見：</b>直近1年でセッションは+156,133増えましたが、その<b>88%（+136,934）はソーシャル経由</b>で、
+うちInstagramが166,659セッションを占めます。この流入は<b>175,867セッションでカート投入がわずか308件（0.18%）、購入は20件</b>。
+ボット判定ではなく<b>実在の人間</b>のアクセスです（ボットは1,868件のみ）。
+「見られてはいるが、買う導線に乗っていない」状態が1年続いています。
+</div><h2 class="sec">月次売上推移 <span class="tag">青＝EC／グレー＝実店舗POS等・純売上高</span></h2>
+<div class="card"><svg class="chartsvg" viewBox="0 0 1080 300" xmlns="http://www.w3.org/2000/svg"><line x1="52" y1="266.0" x2="1070" y2="266.0" stroke="#e3e5e9"/><text x="46" y="269.0" font-size="9" fill="#9ca3af" text-anchor="end">0M</text><line x1="52" y1="203.5" x2="1070" y2="203.5" stroke="#e3e5e9"/><text x="46" y="206.5" font-size="9" fill="#9ca3af" text-anchor="end">2M</text><line x1="52" y1="141.0" x2="1070" y2="141.0" stroke="#e3e5e9"/><text x="46" y="144.0" font-size="9" fill="#9ca3af" text-anchor="end">4M</text><line x1="52" y1="78.5" x2="1070" y2="78.5" stroke="#e3e5e9"/><text x="46" y="81.5" font-size="9" fill="#9ca3af" text-anchor="end">6M</text><line x1="52" y1="16.0" x2="1070" y2="16.0" stroke="#e3e5e9"/><text x="46" y="19.0" font-size="9" fill="#9ca3af" text-anchor="end">7M</text><rect x="54.3" y="225.3" width="12.0" height="19.6" fill="#cbd5e1"><title>2021-08 店舗等 ¥576,400</title></rect><rect x="54.3" y="244.9" width="12.0" height="21.1" fill="#2563eb"><title>2021-08 EC ¥620,900</title></rect><rect x="71.0" y="124.4" width="12.0" height="63.6" fill="#cbd5e1"><title>2021-09 店舗等 ¥1,870,609</title></rect><rect x="71.0" y="188.0" width="12.0" height="78.0" fill="#2563eb"><title>2021-09 EC ¥2,291,950</title></rect><rect x="87.7" y="129.7" width="12.0" height="82.6" fill="#cbd5e1"><title>2021-10 店舗等 ¥2,427,579</title></rect><rect x="87.7" y="212.3" width="12.0" height="53.7" fill="#2563eb"><title>2021-10 EC ¥1,579,100</title></rect><rect x="104.4" y="98.1" width="12.0" height="102.0" fill="#cbd5e1"><title>2021-11 店舗等 ¥2,997,618</title></rect><rect x="104.4" y="200.0" width="12.0" height="66.0" fill="#2563eb"><title>2021-11 EC ¥1,939,000</title></rect><rect x="121.1" y="35.0" width="12.0" height="131.2" fill="#cbd5e1"><title>2021-12 店舗等 ¥3,858,264</title></rect><rect x="121.1" y="166.3" width="12.0" height="99.7" fill="#2563eb"><title>2021-12 EC ¥2,932,000</title></rect><rect x="137.8" y="134.2" width="12.0" height="85.7" fill="#cbd5e1"><title>2022-01 店舗等 ¥2,520,540</title></rect><rect x="137.8" y="219.9" width="12.0" height="46.1" fill="#2563eb"><title>2022-01 EC ¥1,354,800</title></rect><rect x="154.5" y="105.8" width="12.0" height="118.2" fill="#cbd5e1"><title>2022-02 店舗等 ¥3,475,809</title></rect><rect x="154.5" y="224.1" width="12.0" height="41.9" fill="#2563eb"><title>2022-02 EC ¥1,233,200</title></rect><rect x="171.2" y="76.1" width="12.0" height="130.0" fill="#cbd5e1"><title>2022-03 店舗等 ¥3,823,000</title></rect><rect x="171.2" y="206.1" width="12.0" height="59.9" fill="#2563eb"><title>2022-03 EC ¥1,760,600</title></rect><rect x="187.8" y="108.1" width="12.0" height="101.7" fill="#cbd5e1"><title>2022-04 店舗等 ¥2,991,200</title></rect><rect x="187.8" y="209.8" width="12.0" height="56.2" fill="#2563eb"><title>2022-04 EC ¥1,651,600</title></rect><rect x="204.5" y="128.0" width="12.0" height="93.4" fill="#cbd5e1"><title>2022-05 店舗等 ¥2,746,700</title></rect><rect x="204.5" y="221.4" width="12.0" height="44.6" fill="#2563eb"><title>2022-05 EC ¥1,310,100</title></rect><rect x="221.2" y="105.9" width="12.0" height="71.4" fill="#cbd5e1"><title>2022-06 店舗等 ¥2,100,400</title></rect><rect x="221.2" y="177.4" width="12.0" height="88.6" fill="#2563eb"><title>2022-06 EC ¥2,605,160</title></rect><rect x="237.9" y="152.6" width="12.0" height="67.2" fill="#cbd5e1"><title>2022-07 店舗等 ¥1,975,796</title></rect><rect x="237.9" y="219.8" width="12.0" height="46.2" fill="#2563eb"><title>2022-07 EC ¥1,357,500</title></rect><rect x="254.6" y="141.7" width="12.0" height="72.2" fill="#cbd5e1"><title>2022-08 店舗等 ¥2,123,900</title></rect><rect x="254.6" y="214.0" width="12.0" height="52.0" fill="#2563eb"><title>2022-08 EC ¥1,529,000</title></rect><rect x="271.3" y="121.6" width="12.0" height="97.8" fill="#cbd5e1"><title>2022-09 店舗等 ¥2,875,500</title></rect><rect x="271.3" y="219.4" width="12.0" height="46.6" fill="#2563eb"><title>2022-09 EC ¥1,371,100</title></rect><rect x="288.0" y="104.2" width="12.0" height="121.5" fill="#cbd5e1"><title>2022-10 店舗等 ¥3,572,723</title></rect><rect x="288.0" y="225.7" width="12.0" height="40.3" fill="#2563eb"><title>2022-10 EC ¥1,184,200</title></rect><rect x="304.7" y="100.5" width="12.0" height="116.6" fill="#cbd5e1"><title>2022-11 店舗等 ¥3,427,190</title></rect><rect x="304.7" y="217.1" width="12.0" height="48.9" fill="#2563eb"><title>2022-11 EC ¥1,438,900</title></rect><rect x="321.4" y="25.6" width="12.0" height="148.3" fill="#cbd5e1"><title>2022-12 店舗等 ¥4,359,982</title></rect><rect x="321.4" y="173.9" width="12.0" height="92.1" fill="#2563eb"><title>2022-12 EC ¥2,709,100</title></rect><rect x="338.0" y="93.8" width="12.0" height="98.3" fill="#cbd5e1"><title>2023-01 店舗等 ¥2,889,027</title></rect><rect x="338.0" y="192.1" width="12.0" height="73.9" fill="#2563eb"><title>2023-01 EC ¥2,173,300</title></rect><rect x="354.7" y="174.4" width="12.0" height="47.2" fill="#cbd5e1"><title>2023-02 店舗等 ¥1,387,909</title></rect><rect x="354.7" y="221.6" width="12.0" height="44.4" fill="#2563eb"><title>2023-02 EC ¥1,304,700</title></rect><rect x="371.4" y="50.7" width="12.0" height="119.2" fill="#cbd5e1"><title>2023-03 店舗等 ¥3,503,645</title></rect><rect x="371.4" y="169.9" width="12.0" height="96.1" fill="#2563eb"><title>2023-03 EC ¥2,826,500</title></rect><rect x="388.1" y="103.6" width="12.0" height="111.1" fill="#cbd5e1"><title>2023-04 店舗等 ¥3,267,127</title></rect><rect x="388.1" y="214.7" width="12.0" height="51.3" fill="#2563eb"><title>2023-04 EC ¥1,506,800</title></rect><rect x="404.8" y="122.5" width="12.0" height="95.5" fill="#cbd5e1"><title>2023-05 店舗等 ¥2,807,518</title></rect><rect x="404.8" y="218.0" width="12.0" height="48.0" fill="#2563eb"><title>2023-05 EC ¥1,410,500</title></rect><rect x="421.5" y="102.3" width="12.0" height="79.7" fill="#cbd5e1"><title>2023-06 店舗等 ¥2,343,900</title></rect><rect x="421.5" y="182.0" width="12.0" height="84.0" fill="#2563eb"><title>2023-06 EC ¥2,469,570</title></rect><rect x="438.2" y="86.5" width="12.0" height="122.1" fill="#cbd5e1"><title>2023-07 店舗等 ¥3,589,427</title></rect><rect x="438.2" y="208.6" width="12.0" height="57.4" fill="#2563eb"><title>2023-07 EC ¥1,687,260</title></rect><rect x="454.9" y="94.2" width="12.0" height="104.6" fill="#cbd5e1"><title>2023-08 店舗等 ¥3,074,527</title></rect><rect x="454.9" y="198.7" width="12.0" height="67.3" fill="#2563eb"><title>2023-08 EC ¥1,977,300</title></rect><rect x="471.5" y="127.8" width="12.0" height="95.6" fill="#cbd5e1"><title>2023-09 店舗等 ¥2,810,891</title></rect><rect x="471.5" y="223.4" width="12.0" height="42.6" fill="#2563eb"><title>2023-09 EC ¥1,251,000</title></rect><rect x="488.2" y="87.7" width="12.0" height="123.4" fill="#cbd5e1"><title>2023-10 店舗等 ¥3,627,432</title></rect><rect x="488.2" y="211.1" width="12.0" height="54.9" fill="#2563eb"><title>2023-10 EC ¥1,614,400</title></rect><rect x="504.9" y="121.0" width="12.0" height="106.5" fill="#cbd5e1"><title>2023-11 店舗等 ¥3,130,007</title></rect><rect x="504.9" y="227.5" width="12.0" height="38.5" fill="#2563eb"><title>2023-11 EC ¥1,133,200</title></rect><rect x="521.6" y="16.0" width="12.0" height="148.4" fill="#cbd5e1"><title>2023-12 店舗等 ¥4,361,640</title></rect><rect x="521.6" y="164.4" width="12.0" height="101.6" fill="#2563eb"><title>2023-12 EC ¥2,988,250</title></rect><rect x="538.3" y="68.0" width="12.0" height="138.3" fill="#cbd5e1"><title>2024-01 店舗等 ¥4,066,486</title></rect><rect x="538.3" y="206.3" width="12.0" height="59.7" fill="#2563eb"><title>2024-01 EC ¥1,754,025</title></rect><rect x="555.0" y="125.5" width="12.0" height="88.7" fill="#cbd5e1"><title>2024-02 店舗等 ¥2,606,550</title></rect><rect x="555.0" y="214.2" width="12.0" height="51.8" fill="#2563eb"><title>2024-02 EC ¥1,523,600</title></rect><rect x="571.7" y="84.0" width="12.0" height="108.3" fill="#cbd5e1"><title>2024-03 店舗等 ¥3,184,057</title></rect><rect x="571.7" y="192.3" width="12.0" height="73.7" fill="#2563eb"><title>2024-03 EC ¥2,167,740</title></rect><rect x="588.4" y="110.3" width="12.0" height="103.8" fill="#cbd5e1"><title>2024-04 店舗等 ¥3,051,686</title></rect><rect x="588.4" y="214.1" width="12.0" height="51.9" fill="#2563eb"><title>2024-04 EC ¥1,525,950</title></rect><rect x="605.1" y="159.2" width="12.0" height="62.6" fill="#cbd5e1"><title>2024-05 店舗等 ¥1,840,926</title></rect><rect x="605.1" y="221.8" width="12.0" height="44.2" fill="#2563eb"><title>2024-05 EC ¥1,298,910</title></rect><rect x="621.7" y="104.2" width="12.0" height="87.1" fill="#cbd5e1"><title>2024-06 店舗等 ¥2,560,905</title></rect><rect x="621.7" y="191.3" width="12.0" height="74.7" fill="#2563eb"><title>2024-06 EC ¥2,197,050</title></rect><rect x="638.4" y="122.3" width="12.0" height="92.0" fill="#cbd5e1"><title>2024-07 店舗等 ¥2,704,407</title></rect><rect x="638.4" y="214.2" width="12.0" height="51.8" fill="#2563eb"><title>2024-07 EC ¥1,521,750</title></rect><rect x="655.1" y="148.5" width="12.0" height="59.8" fill="#cbd5e1"><title>2024-08 店舗等 ¥1,758,686</title></rect><rect x="655.1" y="208.4" width="12.0" height="57.6" fill="#2563eb"><title>2024-08 EC ¥1,694,600</title></rect><rect x="671.8" y="110.3" width="12.0" height="85.8" fill="#cbd5e1"><title>2024-09 店舗等 ¥2,522,419</title></rect><rect x="671.8" y="196.1" width="12.0" height="69.9" fill="#2563eb"><title>2024-09 EC ¥2,054,550</title></rect><rect x="688.5" y="129.4" width="12.0" height="84.3" fill="#cbd5e1"><title>2024-10 店舗等 ¥2,477,747</title></rect><rect x="688.5" y="213.7" width="12.0" height="52.3" fill="#2563eb"><title>2024-10 EC ¥1,537,470</title></rect><rect x="705.2" y="71.7" width="12.0" height="116.4" fill="#cbd5e1"><title>2024-11 店舗等 ¥3,421,468</title></rect><rect x="705.2" y="188.0" width="12.0" height="78.0" fill="#2563eb"><title>2024-11 EC ¥2,291,850</title></rect><rect x="721.9" y="22.9" width="12.0" height="140.9" fill="#cbd5e1"><title>2024-12 店舗等 ¥4,141,555</title></rect><rect x="721.9" y="163.8" width="12.0" height="102.2" fill="#2563eb"><title>2024-12 EC ¥3,004,535</title></rect><rect x="738.6" y="62.1" width="12.0" height="122.8" fill="#cbd5e1"><title>2025-01 店舗等 ¥3,611,183</title></rect><rect x="738.6" y="184.9" width="12.0" height="81.1" fill="#2563eb"><title>2025-01 EC ¥2,383,430</title></rect><rect x="755.3" y="87.1" width="12.0" height="114.4" fill="#cbd5e1"><title>2025-02 店舗等 ¥3,361,998</title></rect><rect x="755.3" y="201.4" width="12.0" height="64.6" fill="#2563eb"><title>2025-02 EC ¥1,898,900</title></rect><rect x="771.9" y="42.8" width="12.0" height="132.5" fill="#cbd5e1"><title>2025-03 店舗等 ¥3,894,588</title></rect><rect x="771.9" y="175.3" width="12.0" height="90.7" fill="#2563eb"><title>2025-03 EC ¥2,666,120</title></rect><rect x="788.6" y="40.5" width="12.0" height="140.0" fill="#cbd5e1"><title>2025-04 店舗等 ¥4,115,567</title></rect><rect x="788.6" y="180.5" width="12.0" height="85.5" fill="#2563eb"><title>2025-04 EC ¥2,513,400</title></rect><rect x="805.3" y="121.8" width="12.0" height="79.1" fill="#cbd5e1"><title>2025-05 店舗等 ¥2,324,786</title></rect><rect x="805.3" y="200.9" width="12.0" height="65.1" fill="#2563eb"><title>2025-05 EC ¥1,915,050</title></rect><rect x="822.0" y="80.8" width="12.0" height="88.4" fill="#cbd5e1"><title>2025-06 店舗等 ¥2,599,914</title></rect><rect x="822.0" y="169.2" width="12.0" height="96.8" fill="#2563eb"><title>2025-06 EC ¥2,845,000</title></rect><rect x="838.7" y="114.2" width="12.0" height="96.4" fill="#cbd5e1"><title>2025-07 店舗等 ¥2,834,668</title></rect><rect x="838.7" y="210.6" width="12.0" height="55.4" fill="#2563eb"><title>2025-07 EC ¥1,627,950</title></rect><rect x="855.4" y="97.7" width="12.0" height="122.6" fill="#cbd5e1"><title>2025-08 店舗等 ¥3,604,582</title></rect><rect x="855.4" y="220.3" width="12.0" height="45.7" fill="#2563eb"><title>2025-08 EC ¥1,343,860</title></rect><rect x="872.1" y="141.0" width="12.0" height="67.1" fill="#cbd5e1"><title>2025-09 店舗等 ¥1,972,160</title></rect><rect x="872.1" y="208.1" width="12.0" height="57.9" fill="#2563eb"><title>2025-09 EC ¥1,701,610</title></rect><rect x="888.8" y="109.7" width="12.0" height="116.0" fill="#cbd5e1"><title>2025-10 店舗等 ¥3,409,159</title></rect><rect x="888.8" y="225.7" width="12.0" height="40.3" fill="#2563eb"><title>2025-10 EC ¥1,185,320</title></rect><rect x="905.5" y="73.2" width="12.0" height="116.5" fill="#cbd5e1"><title>2025-11 店舗等 ¥3,425,634</title></rect><rect x="905.5" y="189.7" width="12.0" height="76.3" fill="#2563eb"><title>2025-11 EC ¥2,243,020</title></rect><rect x="922.1" y="25.1" width="12.0" height="109.9" fill="#cbd5e1"><title>2025-12 店舗等 ¥3,232,406</title></rect><rect x="922.1" y="135.0" width="12.0" height="131.0" fill="#2563eb"><title>2025-12 EC ¥3,850,760</title></rect><rect x="938.8" y="23.1" width="12.0" height="140.7" fill="#cbd5e1"><title>2026-01 店舗等 ¥4,137,674</title></rect><rect x="938.8" y="163.8" width="12.0" height="102.2" fill="#2563eb"><title>2026-01 EC ¥3,003,470</title></rect><rect x="955.5" y="114.3" width="12.0" height="104.8" fill="#cbd5e1"><title>2026-02 店舗等 ¥3,081,331</title></rect><rect x="955.5" y="219.1" width="12.0" height="46.9" fill="#2563eb"><title>2026-02 EC ¥1,378,880</title></rect><rect x="972.2" y="87.5" width="12.0" height="105.2" fill="#cbd5e1"><title>2026-03 店舗等 ¥3,092,040</title></rect><rect x="972.2" y="192.7" width="12.0" height="73.3" fill="#2563eb"><title>2026-03 EC ¥2,155,780</title></rect><rect x="988.9" y="115.8" width="12.0" height="84.3" fill="#cbd5e1"><title>2026-04 店舗等 ¥2,479,246</title></rect><rect x="988.9" y="200.1" width="12.0" height="65.9" fill="#2563eb"><title>2026-04 EC ¥1,937,653</title></rect><rect x="1005.6" y="117.0" width="12.0" height="107.5" fill="#cbd5e1"><title>2026-05 店舗等 ¥3,161,591</title></rect><rect x="1005.6" y="224.6" width="12.0" height="41.4" fill="#2563eb"><title>2026-05 EC ¥1,218,393</title></rect><rect x="1022.3" y="66.9" width="12.0" height="95.3" fill="#cbd5e1"><title>2026-06 店舗等 ¥2,802,154</title></rect><rect x="1022.3" y="162.2" width="12.0" height="103.8" fill="#2563eb"><title>2026-06 EC ¥3,052,510</title></rect><rect x="1039.0" y="119.6" width="12.0" height="88.3" fill="#cbd5e1"><title>2026-07 店舗等 ¥2,596,243</title></rect><rect x="1039.0" y="207.9" width="12.0" height="58.1" fill="#2563eb"><title>2026-07 EC ¥1,708,400</title></rect><rect x="1055.6" y="206.4" width="12.0" height="35.4" fill="#cbd5e1"><title>2026-08 店舗等 ¥1,041,854</title></rect><rect x="1055.6" y="241.8" width="12.0" height="24.2" fill="#2563eb"><title>2026-08 EC ¥711,105</title></rect><text x="143.8" y="284" font-size="9.5" fill="#6b7280" text-anchor="middle">2022</text><text x="344.0" y="284" font-size="9.5" fill="#6b7280" text-anchor="middle">2023</text><text x="544.3" y="284" font-size="9.5" fill="#6b7280" text-anchor="middle">2024</text><text x="744.6" y="284" font-size="9.5" fill="#6b7280" text-anchor="middle">2025</text><text x="944.8" y="284" font-size="9.5" fill="#6b7280" text-anchor="middle">2026</text></svg>
+<div class="desc" style="margin:10px 0 0">ECは月200〜300万円の幅で横ばい。売上の山は12月と3月。全体の6割は実店舗が稼いでいる。</div></div><h2 class="sec">訪問者は倍増、注文は減少 <span class="tag">2024年9月〜2026年8月・各系列は最大値を100として正規化</span></h2>
+<div class="card">
+<svg class="chartsvg" viewBox="0 0 1080 240" xmlns="http://www.w3.org/2000/svg">
+<polyline points="52.0,133.0 96.3,162.7 140.5,149.6 184.8,134.4 229.0,128.7 273.3,110.4 317.6,123.1 361.8,143.7 406.1,142.1 450.3,132.0 494.6,153.9 538.9,123.9 583.1,137.8 627.4,114.6 671.7,94.2 715.9,16.0 760.2,57.0 804.4,77.5 848.7,23.1 893.0,75.2 937.2,43.8 981.5,38.3 1025.7,40.9 1070.0,81.9" fill="none" stroke="#0891b2" stroke-width="2.4"/>
+<polyline points="52.0,124.8 96.3,120.8 140.5,51.4 184.8,59.2 229.0,94.6 273.3,126.1 317.6,99.9 361.8,122.1 406.1,135.2 450.3,56.6 494.6,140.5 538.9,152.3 583.1,149.7 627.4,105.1 671.7,86.8 715.9,16.0 760.2,89.4 804.4,152.3 848.7,128.7 893.0,144.4 937.2,154.9 981.5,50.1 1025.7,144.4 1070.0,174.6" fill="none" stroke="#b91c1c" stroke-width="2.4"/>
+<text x="229.0" y="226" font-size="9.5" fill="#6b7280" text-anchor="middle">25-01</text><text x="494.6" y="226" font-size="9.5" fill="#6b7280" text-anchor="middle">25-07</text><text x="760.2" y="226" font-size="9.5" fill="#6b7280" text-anchor="middle">26-01</text><text x="1025.7" y="226" font-size="9.5" fill="#6b7280" text-anchor="middle">26-07</text>
+<text x="60" y="30" font-size="11" fill="#0891b2" font-weight="700">セッション数</text>
+<text x="60" y="46" font-size="11" fill="#b91c1c" font-weight="700">EC注文数</text>
+</svg>
+<div class="desc" style="margin:10px 0 0">2025年10月以降、セッション（水色）は跳ね上がる一方で注文（赤）は下向き。この2本の線が開いた分が、そのまま取りこぼしになっている。</div></div><h2 class="sec">流入経路別の購入ファネル <span class="tag">直近365日・ボットを除いた実在ユーザーのみ・Shopify実測値</span></h2>
+<div class="card">
+<div class="desc">この表が今回の分析の要です。どの経路から来た人が、実際に買っているかを示しています。</div>
+<div class="tblwrap"><table style="min-width:820px">
+<tr><th>流入経路</th><th class="r">セッション</th><th class="r">構成比</th><th class="r">カート投入</th>
+<th class="r">投入率</th><th class="r">決済到達</th><th class="r">購入</th><th class="r">購入率</th><th class="r">売上寄与</th></tr>
+<tr class="hl-bad"><td><b>ソーシャル</b></td><td class="r">175,867</td><td class="r">62.3%</td><td class="r">308</td><td class="r">0.18%</td><td class="r">70</td><td class="r"><b>20</b></td><td class="r"><b>0.011%</b></td><td class="r">¥588,231</td></tr><tr><td><b>ダイレクト</b></td><td class="r">67,198</td><td class="r">23.8%</td><td class="r">1,151</td><td class="r">1.71%</td><td class="r">879</td><td class="r"><b>548</b></td><td class="r"><b>0.816%</b></td><td class="r">¥16,117,542</td></tr><tr><td><b>検索</b></td><td class="r">36,867</td><td class="r">13.1%</td><td class="r">641</td><td class="r">1.74%</td><td class="r">414</td><td class="r"><b>239</b></td><td class="r"><b>0.648%</b></td><td class="r">¥7,029,366</td></tr><tr><td><b>不明</b></td><td class="r">1,989</td><td class="r">0.7%</td><td class="r">38</td><td class="r">1.91%</td><td class="r">19</td><td class="r"><b>7</b></td><td class="r"><b>0.352%</b></td><td class="r">¥205,881</td></tr><tr class="hl-good"><td><b>メール</b></td><td class="r">409</td><td class="r">0.1%</td><td class="r">16</td><td class="r">3.91%</td><td class="r">11</td><td class="r"><b>9</b></td><td class="r"><b>2.200%</b></td><td class="r">¥264,704</td></tr>
+<tr style="border-top:2px solid var(--ink)"><td><b>合計</b></td><td class="r"><b>282,330</b></td><td class="r">100%</td>
+<td class="r"><b>2,154</b></td><td class="r">0.76%</td><td class="r"><b>1,393</b></td>
+<td class="r"><b>823</b></td><td class="r"><b>0.292%</b></td><td class="r">¥24,205,724</td></tr>
+</table></div>
+<div class="desc" style="margin-top:12px">
+<b>読み方：</b>ソーシャル（赤）は全流入の62%を占めながら購入はわずか20件。しかも<b>つまずきは最初の一歩</b>で、
+カート投入率0.18%はダイレクト1.71%の約1/10。ページを見てすぐ離脱しています。<br>
+一方メール（緑）は購入率2.20%と最も高いのに、年間409セッションしか流していません。<b>最も効く経路を使っていない</b>状態です。
+</div></div><h2 class="sec">購入直前の取りこぼし <span class="tag">直近365日</span></h2>
+<div class="grid2">
+<div class="card"><h3>カートに入れたのに買わなかった</h3>
+<div class="desc">カート投入 2,154件 → 決済画面へ 1,393件 → 購入 823件</div>
+<div class="bar-row"><div class="bar-label">カート投入</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#2563eb"></div></div><div class="bar-val">2,154件</div></div>
+<div class="bar-row"><div class="bar-label">決済画面へ進んだ</div><div class="bar-track"><div class="bar-fill" style="width:65%;background:#0891b2"></div></div><div class="bar-val">1,393件</div></div>
+<div class="bar-row"><div class="bar-label">購入完了</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:#15803d"></div></div><div class="bar-val">823件</div></div>
+<div class="desc" style="margin-top:12px">途中で離脱した<b>1,331件</b>（カート放棄761件・決済放棄570件）は、
+自動メールで追いかけられる対象。金額換算すると<b>¥39,146,803</b>相当が毎年こぼれています。</div>
+</div>
+<div class="card"><h3>Instagram流入の内訳</h3>
+<div class="desc">直近365日・実在ユーザーの流入元 上位</div>
+<div class="bar-row"><div class="bar-label">Instagram</div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#b91c1c"></div></div><div class="bar-val">166,659</div></div><div class="bar-row"><div class="bar-label">直接アクセス</div><div class="bar-track"><div class="bar-fill" style="width:40.3%;background:#2563eb"></div></div><div class="bar-val">67,205</div></div><div class="bar-row"><div class="bar-label">Google</div><div class="bar-track"><div class="bar-fill" style="width:17.3%;background:#0891b2"></div></div><div class="bar-val">28,840</div></div><div class="bar-row"><div class="bar-label">Facebook</div><div class="bar-track"><div class="bar-fill" style="width:5.0%;background:#64748b"></div></div><div class="bar-val">8,341</div></div><div class="bar-row"><div class="bar-label">Yahoo!</div><div class="bar-track"><div class="bar-fill" style="width:4.3%;background:#94a3b8"></div></div><div class="bar-val">7,140</div></div>
+<div class="desc" style="margin-top:12px">Instagram単独で全流入の53%。SNSでの認知獲得は成功しているが、
+<b>その先の「買う」までの橋がかかっていない</b>。この橋を架けるのが施策①。</div>
+</div></div><h2 class="sec">施策別の増収ポテンシャル <span class="tag">直近12ヶ月の実測値を起点に試算／すべて年間・EC純売上ベース</span></h2>
+<div class="callout info">
+<b>試算の前提：</b>平均客単価 ¥29,412（実測）、粗利率65%（決算書46〜48期の62.5〜65.8%およびSKU分析65.4%に基づく）。
+「保守／標準／強気」は各施策の改善幅の置き方の違いで、標準ケースを基本線としています。
+各施策は独立して効くため単純合算していますが、実際には①と③などで重複が生じうる点はご留意ください。
+</div><div class="plan">
+<div class="hd"><span class="no">①</span><span class="nm">Instagram流入の受け皿改善</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>ソーシャル175,867セッション（全流入の62%）が購入20件・転換率0.011%にとどまる。ダイレクト0.816%の1/8〜1/2.7まで引き上げた場合の試算</span></div>
+<div class="row"><span class="k">やること</span><span>流入先ページの改修（投稿商品への直リンク化）、価格・送料・納期の明示、計測タグ実装</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+4.58M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+9.76M円</div></div>
+<div><div class="lab">強気</div><div class="num">+14.93M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+6.34M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>30〜80万円（外注・一度きり）</span></div>
+<div class="row"><span class="k">留意点</span><span>流入の質そのものが購買層でない場合は上限が下がる</span></div>
+</div><div class="plan">
+<div class="hd"><span class="no">②</span><span class="nm">カゴ落ち・決済放棄の自動回収</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>実測でカート放棄761件・決済放棄570件/年が発生。回収率はカゴ落ちメールの一般的な水準（5〜16%）を適用</span></div>
+<div class="row"><span class="k">やること</span><span>カート投入後・決済離脱後に自動でメールを送る仕組みを設定（3通構成）</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+2.80M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+3.75M円</div></div>
+<div><div class="lab">強気</div><div class="num">+4.70M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+2.43M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>月1〜3万円＝年12〜36万円</span></div>
+<div class="row"><span class="k">留意点</span><span>ほぼ無し。効果が最も読みやすい施策</span></div>
+</div><div class="plan">
+<div class="hd"><span class="no">③</span><span class="nm">メール配信の定常運用</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>メール経由の転換率2.20%は全チャネルで最高（ダイレクトの2.7倍）。にもかかわらず年間409セッション＝全流入の0.14%しか送客していない</span></div>
+<div class="row"><span class="k">やること</span><span>既存顧客リストの整備、月2回の配信（新作・再入荷・読みもの）</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+0.78M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+1.63M円</div></div>
+<div><div class="lab">強気</div><div class="num">+2.72M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+1.06M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>②のツール内で完結／制作工数のみ</span></div>
+<div class="row"><span class="k">留意点</span><span>配信リストの整備状況により初速が変わる</span></div>
+</div><div class="plan">
+<div class="hd"><span class="no">④</span><span class="nm">検索(SEO)流入の回復・拡大</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>検索経由は転換率0.65%と良好だが、セッションが前年42,280→36,867と13%縮小している</span></div>
+<div class="row"><span class="k">やること</span><span>主力商品ページのタイトル・説明文整備、構造化データ、読みもの記事の再整備</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.03M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+2.11M円</div></div>
+<div><div class="lab">強気</div><div class="num">+3.51M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+1.37M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>内製なら実質0／外注は月10〜30万円</span></div>
+<div class="row"><span class="k">留意点</span><span>効果発現に3〜6ヶ月かかる</span></div>
+</div><div class="plan">
+<div class="hd"><span class="no">⑤</span><span class="nm">AOV向上（セット販売・クロスセル）</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>現在の平均客単価29,412円。革のケア用品・ギフト包装・色違いの同梱提案は未実装</span></div>
+<div class="row"><span class="k">やること</span><span>商品ページとカート画面に関連商品の提案枠を設置</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.21M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+1.93M円</div></div>
+<div><div class="lab">強気</div><div class="num">+2.90M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+1.26M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>月0.5〜1.5万円＝年6〜18万円</span></div>
+<div class="row"><span class="k">留意点</span><span>押し付けにならない見せ方の調整が必要</span></div>
+</div><div class="plan">
+<div class="hd"><span class="no">⑥</span><span class="nm">実店舗のお客様をECの顧客に</span></div>
+<div class="row"><span class="k">現状と根拠</span><span>実店舗は年間684件・客単価50,338円とECの1.7倍の単価。この来店客がECの配信対象になっていない</span></div>
+<div class="row"><span class="k">やること</span><span>レジで会員登録・メール取得を標準運用化し、③の配信対象に加える</span></div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.21M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+2.01M円</div></div>
+<div><div class="lab">強気</div><div class="num">+3.02M円</div></div>
+</div>
+<div class="row"><span class="k">粗利換算</span><span>標準ケースで <b>+1.31M円</b>（粗利率65%）</span></div>
+<div class="row"><span class="k">費用</span><span>運用整備のみ（追加費用ほぼ無し）</span></div>
+<div class="row"><span class="k">留意点</span><span>店頭オペレーションの定着に時間がかかる</span></div>
+</div><div class="card" style="background:#0f172a;color:#fff;border:none">
+<h3 style="color:#fff;font-size:15px">合計インパクト</h3>
+<div class="tblwrap"><table style="min-width:640px;color:#fff">
+<tr><th style="color:#94a3b8;border-color:#475569">ケース</th><th class="r" style="color:#94a3b8;border-color:#475569">増収額</th>
+<th class="r" style="color:#94a3b8;border-color:#475569">EC売上（現24.15M円→）</th>
+<th class="r" style="color:#94a3b8;border-color:#475569">伸び率</th>
+<th class="r" style="color:#94a3b8;border-color:#475569">粗利増（65%）</th></tr>
+<tr style="border-color:#334155"><td style="border-color:#334155">保守</td><td class="r" style="border-color:#334155">+11.60M円</td><td class="r" style="border-color:#334155"><b>35.75M円</b></td><td class="r" style="border-color:#334155">+48%</td><td class="r" style="border-color:#334155">+7.54M円</td></tr><tr style="border-color:#334155"><td style="border-color:#334155">標準</td><td class="r" style="border-color:#334155">+21.19M円</td><td class="r" style="border-color:#334155"><b>45.33M円</b></td><td class="r" style="border-color:#334155">+88%</td><td class="r" style="border-color:#334155">+13.77M円</td></tr><tr style="border-color:#334155"><td style="border-color:#334155">強気</td><td class="r" style="border-color:#334155">+31.77M円</td><td class="r" style="border-color:#334155"><b>55.92M円</b></td><td class="r" style="border-color:#334155">+132%</td><td class="r" style="border-color:#334155">+20.65M円</td></tr>
+</table></div>
+<div style="font-size:12.3px;margin-top:13px;color:#cbd5e1">
+想定投資額は年間48〜509万円（③⑥はほぼ費用ゼロ、④を外注するかで幅が出ます）。
+標準ケースの粗利増13.77M円に対し、費用を上限の509万円で見ても<b style="color:#fff">投資回収は約2.7倍</b>。
+<b style="color:#fff">48期の営業損益△9.5百万円に対し、標準ケースの粗利増13.77M円は営業黒字化に十分な水準</b>です。
+</div></div><h2 class="sec">着手順序の考え方</h2>
+<div class="card">
+<div class="tblwrap"><table style="min-width:700px">
+<tr><th>時期</th><th>施策</th><th class="r">標準ケース増収</th><th>理由</th></tr>
+<tr><td><b>1ヶ月目</b></td><td>② カゴ落ち回収＋③ メール運用開始</td><td class="r">+5.38M円</td>
+<td>費用が最も小さく、効果が最も読みやすい。ここで先に現金を作る</td></tr>
+<tr><td><b>1〜3ヶ月目</b></td><td>① Instagram導線の改修</td><td class="r">+9.76M円</td>
+<td>金額インパクトが最大。ただし原因診断（流入の質か導線か）を先に行う</td></tr>
+<tr><td><b>2〜4ヶ月目</b></td><td>⑤ AOV向上＋⑥ 店舗客のEC化</td><td class="r">+3.94M円</td>
+<td>③の配信基盤ができてから着手すると効率が良い</td></tr>
+<tr><td><b>3〜9ヶ月目</b></td><td>④ 検索(SEO)の回復</td><td class="r">+2.11M円</td>
+<td>効果発現に時間がかかるため、早めに種を撒いて後半で刈り取る</td></tr>
+</table></div>
+<div class="desc" style="margin-top:12px">
+なお12月・3月が売上のピークであるため、②③の配信基盤は<b>10月までに立ち上げておくと年末商戦に間に合います</b>。
+</div></div><div class="foot">
+出所：Shopify管理画面「test-brooklyn-museum」ストア分析（ShopifyQL・2026年8月19日取得）。すべて閲覧とCSVエクスポートのみで、商品・設定の変更は行っていません。<br>
+定義：純売上高＝値引き後・税抜。直近12ヶ月＝2025年9月〜2026年8月。前年同期＝2024年9月〜2025年8月。
+ファネル数値は human_or_bot_session='human' でボットを除外した実測値（直近365日）。
+EC＝Shopifyの販売チャネル「Online Store」、実店舗POS等＝「Point of Sale」「Draft Orders」等の合計。
+卸売はShopifyを経由しないため本ダッシュボードには含まれません。<br>
+増収試算は上記実測値に業界標準の改善幅を適用した推計であり、実績を保証するものではありません。粗利率65%は決算書46〜48期（62.5〜65.8%）およびSKU分析（65.4%）に基づく仮定値です。
+決算書ベースの財務分析は auto memory「project-brooklyn-financials」を参照。
+</div></div></body></html>

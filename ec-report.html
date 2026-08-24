@@ -1,0 +1,405 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<title>BROOKLYN MUSEUM EC分析レポート</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--ink:#181a1f;--muted:#666d78;
+--accent:#1d4ed8;--good:#0f7a3d;--bad:#b3261e;--warn:#966b06;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.8}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px 90px}
+.hdbar{position:sticky;top:0;background:var(--bg);z-index:10;padding-top:24px}
+.doc-hd .cat{font-size:11.5px;color:var(--accent);font-weight:800;letter-spacing:.06em}
+h1{font-size:22px;margin:6px 0 4px;font-weight:800}
+.meta{color:var(--muted);font-size:11.5px;padding-bottom:14px}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--ink);margin-bottom:0}
+.tab{padding:10px 18px;font-weight:800;font-size:13.5px;cursor:pointer;color:var(--muted);
+border-radius:8px 8px 0 0;user-select:none}
+.tab.on{color:var(--ink);background:#fff;border:2px solid var(--ink);border-bottom:2px solid #fff;margin-bottom:-2px}
+.page{display:none;padding-top:26px}
+.page.on{display:block}
+h2{font-size:17px;font-weight:800;margin:34px 0 14px;padding:8px 0 8px 12px;
+border-left:5px solid var(--accent);background:#eef2fb}
+h2:first-child{margin-top:0}
+h3{font-size:14.5px;font-weight:800;margin:20px 0 8px}
+p{margin:0 0 10px}
+.summary-box{background:#0f172a;color:#fff;border-radius:12px;padding:22px 26px;margin:14px 0 8px}
+.summary-box h3{color:#fff;font-size:12.5px;letter-spacing:.04em;opacity:.75;margin:0 0 10px;text-transform:uppercase}
+.summary-box .pt{margin:9px 0;font-size:14px;padding-left:24px;text-indent:-24px}
+.summary-box .pt .no{color:#93c5fd;font-weight:800;margin-right:6px}
+.summary-box .pt b{color:#93c5fd;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 6px}
+th{text-align:left;padding:8px 9px;border-bottom:2px solid var(--ink);color:var(--muted);font-weight:700;font-size:11.5px}
+td{padding:8px 9px;border-bottom:1px solid var(--line)}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.tblwrap{overflow-x:auto}
+.finding{border:1px solid var(--line);border-radius:10px;padding:16px 19px;margin-bottom:14px;background:#fff}
+.finding .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:5px;margin-bottom:8px}
+.tag.discovery{background:#dbeafe;color:#1e3a8a}
+.finding h4{font-size:14.5px;margin:0 0 6px;font-weight:800}
+.finding .ev{font-size:12.5px;color:#374151;background:#f8f9fb;border-radius:6px;padding:9px 12px;margin-top:8px;border-left:3px solid var(--accent)}
+.conf{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px}
+.conf.high{background:#dcfce7;color:var(--good)}
+.conf.mid{background:#fef3c7;color:var(--warn)}
+.plan{background:#fff;border:1px solid var(--line);border-radius:10px;padding:17px 19px;margin-bottom:14px}
+.plan .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.plan .no{font-weight:800;color:var(--accent);font-size:16px}
+.plan .nm{font-weight:800;font-size:14px}
+.calc{background:#f8f9fb;border:1px dashed #c7ccd6;border-radius:8px;padding:12px 14px;margin:10px 0;font-size:12.6px}
+.calc .row{display:flex;gap:8px;margin:5px 0}
+.calc .k{flex-shrink:0;width:88px;color:var(--muted);font-weight:700;font-size:11.3px;padding-top:1px}
+.calc .formula{font-family:ui-monospace,monospace;background:#fff;border:1px solid var(--line);border-radius:5px;padding:6px 9px;font-size:12px;margin:6px 0}
+.money{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 4px}
+.money div{border:1px solid var(--line);border-radius:6px;padding:8px 9px;text-align:center}
+.money .std{background:#eef2fb;border-color:#93c5fd}
+.money .lab{font-size:10px;color:var(--muted)}
+.money .num{font-size:15px;font-weight:800}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 19px;margin-bottom:14px}
+.foot{margin-top:38px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.9}
+
+/* --- サイトの実際の問題箇所カード --- */
+.sitecheck{border:1.5px solid #fca5a5;background:#fff8f7;border-radius:10px;padding:15px 18px;margin:12px 0}
+.sc-hd{font-weight:800;font-size:13.5px;margin-bottom:6px;color:#7f1d1d}
+.sitecheck p{font-size:12.8px;color:#374151}
+.sc-where{font-size:12.3px;background:#fff;border-radius:6px;padding:8px 11px;margin:8px 0;border:1px solid #f3d0d0}
+.sc-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.btn{display:flex;flex-direction:column;gap:1px;text-decoration:none;padding:8px 14px;border-radius:8px;
+font-size:12.5px;font-weight:700;flex:1;min-width:180px}
+.btn span{font-weight:400;font-size:10.5px;opacity:.85}
+.btn-view{background:#1d4ed8;color:#fff}
+.btn-fix{background:#0f7a3d;color:#fff}
+.sc-note{font-size:11.5px;color:#7f1d1d;margin-top:9px;padding-top:9px;border-top:1px dashed #f3d0d0}
+</style></head><body><div class="wrap">
+
+<div class="hdbar">
+<div class="doc-hd"><span class="cat">DATA ANALYSIS REPORT</span></div>
+<h1>BROOKLYN MUSEUM　Shopify EC分析レポート</h1>
+<div class="meta">対象：2021年8月〜2026年8月（Shopify管理画面の実データ）｜作成：B Supply 永尾｜金額は値引き後・税抜の売上</div>
+<div class="tabs">
+<div class="tab on" data-p="p1">サマリー</div>
+<div class="tab" data-p="p2">示唆（わかったこと）</div>
+<div class="tab" data-p="p3">課題</div>
+<div class="tab" data-p="p4">改善施策とアップサイド</div>
+</div>
+</div>
+<div class="page on" id="p1">
+<h2>結論（3つ）</h2>
+<div class="summary-box">
+<h3>まず結論から</h3>
+<div class="pt"><span class="no">①</span>ECの売上は、2年前は前の年より26%増えていたのに、直近1年は前の年より7%減った。理由は<b>サイトに来る人の質が変わった</b>こと。人の数自体はこの1年で2倍に増えている</div>
+<div class="pt"><span class="no">②</span>サイトへの訪問の62%はInstagram経由だが、そこから実際に買った人の割合は<b>0.011%</b>しかない（ダイレクト経由の74分の1）。「見てもらえているのに、買うところまでつながっていない」状態</div>
+<div class="pt"><span class="no">③</span>見つかった6つの改善ポイントを全部やると、標準ケースでEC売上が<b>+21.19M円（+88%）</b>、粗利益は+13.77M円増える見込み</div>
+</div>
+
+<h2>まず数字で全体を見る</h2>
+<p>Shopify管理画面「test-brooklyn-museum」のデータを、見ることとCSVでの書き出しだけで確認した（商品や設定は一切変えていない）。
+決算書と照らし合わせて、直近12ヶ月のEC(オンラインストア)売上¥24,146,901・お店(POS)の売上¥34,431,492が、
+48期決算書のEC2,330万円・店舗3,420万円とほぼ同じ数字であることを確認した。卸売りはShopifyを通っていないので、この中には入っていない。
+このレポートは<b>EC(オンラインストア)</b>に絞って見ている。</p>
+<div class="tblwrap"><table>
+<tr><th></th><th class="r">EC売上</th><th class="r">EC注文数</th><th class="r">1回の購入金額</th><th class="r">サイトに来た人数</th><th class="r">買った人の割合</th></tr>
+<tr><td>2年前（23年9月〜24年8月）</td><td class="r">¥20,670,475</td><td class="r">863件</td><td class="r">¥23,952</td><td class="r">242,874</td><td class="r">0.355%</td></tr>
+<tr><td>1年前（24年9月〜25年8月）</td><td class="r">¥26,082,115</td><td class="r">907件</td><td class="r">¥28,756</td><td class="r">155,696</td><td class="r">0.583%</td></tr>
+<tr><td><b>直近12ヶ月（25年9月〜26年8月）</b></td><td class="r"><b>¥24,146,901</b></td><td class="r"><b>821件</b></td><td class="r"><b>¥29,412</b></td><td class="r"><b>311,829</b></td><td class="r"><b>0.263%</b></td></tr>
+</table></div>
+<p style="margin-top:10px"><b>見方：</b>2年前→1年前は「サイトに来る人は減ったが、買う割合は上がった」ので効率が良くなり、売上は+26%になった。
+ところが1年前→直近は「サイトに来る人は倍になったが、買う割合は半分に下がった」という逆の動きになり、売上は-7%に変わった。
+<b>人数を増やしたのに、質が落ちて売上が下がった</b>——これが最初にわかったこと。</p>
+</div><div class="page" id="p2">
+<h2>示唆（データからわかったこと）</h2>
+
+<div class="finding"><span class="tag discovery">わかったこと①</span><span class="conf high">確かさ：高い</span>
+<h4>サイトへの訪問は増えたのに、買う人は減った</h4>
+<p>直近1年でサイトに来た人（セッション数）は155,696人から311,829人まで増えた（+100%）。
+増えた分の88%はInstagram経由で、そのうち166,659人（全体の53%）がInstagramそのものから来ている。
+ロボット（bot）によるアクセスはほとんどなく（1,868件だけ）、ほぼ全員が本物の人。
+それなのに、Instagram経由で実際に買った人の割合は<b>0.011%</b>しかなく、ダイレクト経由（0.816%）の74分の1で、全部のチャネルの中で一番低い。</p>
+<div class="tblwrap"><table><tr><th>流入経路</th><th class="r">来た人数</th><th class="r">カートに入れた</th><th class="r">決済画面まで進んだ</th><th class="r">買った</th></tr><tr><td>ソーシャル</td><td class="r">175,867</td><td class="r">308</td><td class="r">70</td><td class="r">20</td></tr><tr><td>ダイレクト</td><td class="r">67,198</td><td class="r">1,151</td><td class="r">879</td><td class="r">548</td></tr><tr><td>検索</td><td class="r">36,867</td><td class="r">641</td><td class="r">414</td><td class="r">239</td></tr><tr><td>不明</td><td class="r">1,989</td><td class="r">38</td><td class="r">19</td><td class="r">7</td></tr><tr><td>メール</td><td class="r">409</td><td class="r">16</td><td class="r">11</td><td class="r">9</td></tr></table></div>
+<div class="ev">わかったこと：たくさんの人に見てもらえているのに、買うところまでたどり着けていない。広告や投稿の「量」を増やす前に、
+「買ってもらう仕組み」を直すほうが先。実際にサイトを見て、どこが原因かを下で確認する。</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 商品ページ：レビューが埋もれている</div>
+<p>実際に「ロワイヤルMトートバッグ」のページを測ったところ、カートに入れるボタンは上から2,094px、お客様の声（★5.00・25件）は上から25,573pxの位置にあった。ページ全体の長さが32,884pxなので、レビューはページの78%くらい下、かなり奥のほうにある。商品名の横やボタンの近くには、星の評価が出ていない。</p>
+<div class="sc-where"><b>具体的な場所：</b>商品ページの一番上（商品名・価格・カートボタンのあたり）に、星の評価が表示されていない</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/products/632735db" target="_blank" rel="noopener" class="btn btn-view">🔗 ロワイヤルMトート<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/themes/current/editor?previewPath=%2Fproducts%2F632735db" target="_blank" rel="noopener" class="btn btn-fix">🛠 このページをテーマエディタで開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">テーマエディタでこのページを開き、商品名の下あたりに「評価バッジ」のセクションを追加すると直せる。レビューの仕組み自体（Judge.me）は入っているので、追加の契約は不要。</div>
+</div>
+</div>
+
+<div class="finding"><span class="tag discovery">わかったこと②</span><span class="conf high">確かさ：高い</span>
+<h4>売上が上がる時期は、12月だけでなく6月にもある</h4>
+<p>月ごとの売上を指数（月平均を100とした数字）にすると、12月が一番高くて166。次に高いのは<b>6月で134</b>、3月（125）より高い。
+逆に売上が少ないのは10月（73）・2月（79）・5月（79）。</p>
+<div class="ev">わかったこと：今までは「12月と3月が売れる時期」と考えていたが、<b>6月（ボーナスやお中元の時期）</b>も大事な商戦の時期として扱ったほうがよい。
+1年の予算や在庫の計画を「2つの山」ではなく「3つの山」で考える。</div>
+</div>
+
+<div class="finding"><span class="tag discovery">わかったこと③</span><span class="conf mid">確かさ：中くらい</span>
+<h4>新しく買った人のほうが、前から買っている人より高い商品を選んでいる</h4>
+<p>直近365日のデータで、新規のお客様は460件・平均34,231円。前から買っているお客様（リピーター）は378件・平均24,006円。
+ふつうは長く使ってくれているお客様のほうが高い商品を買う傾向があるが、ここでは逆になっている。</p>
+<div class="ev">わかったこと：新しいお客様はバッグなど高い商品を最初に選び、リピーターのお客様は財布やカードケースなど小さいものを買い足している可能性が高い。
+リピーターのお客様に、もっと上の商品（バッグなど）を勧める工夫が足りていないのかもしれない。</div>
+</div>
+
+<div class="finding"><span class="tag discovery">わかったこと④</span><span class="conf high">確かさ：高い</span>
+<h4>商品のグループによって、1回の購入金額が7倍も違う</h4>
+<div class="tblwrap"><table>
+<tr><th>グループ</th><th class="r">売上</th><th class="r">全体に占める割合</th><th class="r">商品数</th><th class="r">注文数</th><th class="r">1回の購入金額</th></tr>
+<tr><td>財布/ウォレット</td><td class="r">¥81,022,671</td><td class="r">35.0%</td><td class="r">249</td><td class="r">2,247</td><td class="r">¥36,058</td></tr><tr><td>トート/バッグ</td><td class="r">¥68,441,646</td><td class="r">29.5%</td><td class="r">155</td><td class="r">868</td><td class="r">¥78,850</td></tr><tr><td>その他/リフィル</td><td class="r">¥43,861,838</td><td class="r">18.9%</td><td class="r">442</td><td class="r">4,024</td><td class="r">¥10,900</td></tr><tr><td>カードケース/小物</td><td class="r">¥29,716,752</td><td class="r">12.8%</td><td class="r">201</td><td class="r">1,558</td><td class="r">¥19,074</td></tr><tr><td>ベルト</td><td class="r">¥8,596,328</td><td class="r">3.7%</td><td class="r">37</td><td class="r">456</td><td class="r">¥18,852</td></tr>
+</table></div>
+<div class="ev">わかったこと：財布・ウォレットは売上全体の35%を占める一番大きなグループだが、1回あたりの購入金額で見るとバッグが圧倒的に高い（78,850円）。
+安い商品にオプションをつけるより、<b>バッグを買ってもらう流れを太くするほうが</b>、1回の購入金額を上げる近道になる。</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 バッグを買った人に、小物をすすめる仕組みがない</div>
+<p>バッグの1回あたりの購入金額（78,850円）は財布・小物（36,058円）より高いが、カート画面に「よく一緒に買われている商品」のような提案が出ていない。</p>
+<div class="sc-where"><b>具体的な場所：</b>カート画面、および商品ページの下部</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/cart" target="_blank" rel="noopener" class="btn btn-view">🔗 カート画面<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/themes/current/editor?previewPath=%2Fcart" target="_blank" rel="noopener" class="btn btn-fix">🛠 カート画面をテーマエディタで開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">テーマエディタでカート画面に関連商品セクションを追加できる。専用アプリを使う場合は追加費用が発生する。</div>
+</div>
+</div>
+
+<div class="finding"><span class="tag discovery">わかったこと⑤</span><span class="conf high">確かさ：高い</span>
+<h4>買う直前でやめてしまった人が、年間¥39,146,803分もいる</h4>
+<p>直近365日で、カートに商品を入れたのに買わなかった人が761人、決済画面まで進んだのに買わなかった人が570人いた。
+この人たちに、後から連絡する仕組みが今は無い。</p>
+<div class="ev">わかったこと：これは新しくお客様を増やす話ではなく、「もともと買う気があった人」を取りこぼしているだけなので、
+直しやすくて、効果も見込みやすい。</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 カートに入れたあと、決済で離脱した人への連絡がない</div>
+<p>直近365日で、カートに商品を入れたのに買わなかった人が761人、決済画面まで進んだのに買わなかった人が570人いた。今の設定では、この人たちに「買い忘れていませんか」と連絡する仕組みがない。</p>
+<div class="sc-where"><b>具体的な場所：</b>チェックアウト設定の中の「注文を完了しなかったお客様への自動メール」の項目</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/cart" target="_blank" rel="noopener" class="btn btn-view">🔗 カート画面<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/settings/checkout" target="_blank" rel="noopener" class="btn btn-fix">🛠 チェックアウト設定を開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">「設定 → チェックアウト」の中に、注文未完了のお客様への自動メールの項目がある。有効にすれば、追加のアプリ契約なしで最初の1通は送れる（本数を増やすなら②の施策でアプリ導入を検討）。</div>
+</div>
+</div>
+
+<div class="finding"><span class="tag discovery">わかったこと⑥</span><span class="conf mid">確かさ：中くらい</span>
+<h4>一番買ってもらえるチャネル（メール）が、一番使われていない</h4>
+<p>メール経由で来た人が買った割合は2.20%で、全部のチャネルの中で一番高い（ダイレクトの2.7倍）。
+でも、メール経由で来た人は年間409人しかいなくて、全体のたった0.14%。</p>
+<div class="ev">わかったこと：今すでに持っているお客様の情報（EC購入者・お店に来たお客様・メルマガ登録者）に対して、
+定期的にメールを送る仕組みが、実質動いていない。一番コストが低くて効果が高いチャネルが、そのまま放っておかれている。</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 メールでお客様に連絡する仕組みがほぼ動いていない</div>
+<p>メール経由で来た人の購入率は2.20%と一番高いのに、年間409人しかメールから来ていない（全体の0.14%）。定期的にメールを送るキャンペーンが組まれていない状態。</p>
+<div class="sc-where"><b>具体的な場所：</b>マーケティングのキャンペーン作成画面、および顧客リスト</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp" target="_blank" rel="noopener" class="btn btn-view">🔗 サイトのトップページ<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/marketing" target="_blank" rel="noopener" class="btn btn-fix">🛠 マーケティング画面を開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">「マーケティング」からキャンペーンを作成できる。まずは既存のお客様リスト（顧客管理）を確認し、月2回程度の配信から始めるのが現実的。</div>
+</div>
+</div>
+</div><div class="page" id="p3">
+<h2>課題（優先順位）</h2>
+<p>「示唆（わかったこと）」から、直す順番をつけると次のようになる。</p>
+<div class="tblwrap"><table>
+<tr><th>順番</th><th>課題</th><th>売上への影響</th><th>始めやすさ</th><th>どのわかったことに基づくか</th></tr>
+<tr><td><b>最優先</b></td><td>Instagram経由で買ってもらえていない</td><td>大きい（一番売上への影響が大きい）</td><td>中くらい（まず原因を切り分ける必要あり）</td><td>わかったこと①</td></tr>
+<tr><td><b>高い</b></td><td>買う直前でやめた人への連絡がない</td><td>中くらい</td><td>やさしい（仕組みを作るだけ）</td><td>わかったこと⑤</td></tr>
+<tr><td><b>高い</b></td><td>メールがほとんど使われていない</td><td>中くらい</td><td>やさしい</td><td>わかったこと⑥</td></tr>
+<tr><td>中くらい</td><td>検索から来る人が減っている</td><td>中くらい</td><td>難しい（時間がかかる）</td><td>検索セッションが前年比-13%</td></tr>
+<tr><td>中くらい</td><td>リピーターの購入金額が新規より低い</td><td>中くらい</td><td>中くらい</td><td>わかったこと③④</td></tr>
+<tr><td>低め〜中くらい</td><td>6月の商戦を見落としている</td><td>小さい〜中くらい</td><td>やさしい</td><td>わかったこと②</td></tr>
+</table></div>
+<p style="margin-top:14px;color:var(--muted);font-size:12.5px">この順番に沿って、次のページで具体的な改善策とその効果の見込みをまとめている。
+各施策のカードには、実際に直すべきページへのリンクを付けている。</p>
+</div><div class="page" id="p4">
+<h2>改善施策とアップサイド（増える見込みの金額）</h2>
+<p>それぞれの施策の効果は、①Shopifyで確認した「今の実績」に、②業界でよく使われる目安や自社の一番良いチャネルの実績を「目標」として当てはめ、
+③かけ算・引き算だけの計算式で出している。保守・標準・強気の3パターンで幅を持たせている。
+<b>目標の水準そのものは仮定であり、必ずその通りになるわけではない</b>点はご留意いただきたい。
+各施策には、実際に直すページへのリンクを付けている（クリックするとShopify管理画面の該当ページが開く）。</p><div class="plan"><div class="hd"><span class="no">①</span><span class="nm">Instagramから来た人が買いやすいようにする</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>ソーシャル経由は175,867人が来て、買ったのは20件（買った割合0.011%）</span></div>
+<div class="row"><span class="k">目標の水準</span><span>一番良いダイレクト経由の割合（0.816%）を目安に、そこまでの一部を目指す<br>
+保守＝0.10%（ダイレクトの8分の1）／標準＝0.20%（4分の1）／強気＝0.30%（3分の1弱）</span></div>
+<div class="calc formula">増える注文数 ＝ 来た人数175,867 × 目標の割合 － 今の注文数20<br>増える売上 ＝ 増える注文数 × 1回の購入金額29,412円</div>
+<div class="row"><span class="k">計算結果</span><span>保守：175,867×0.10%－20＝156件 → 4,584,294円<br>
+標準：175,867×0.20%－20＝332件 → 9,756,819円<br>
+強気：175,867×0.30%－20＝508件 → 14,929,344円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+4.58M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+9.76M円</div></div>
+<div><div class="lab">強気</div><div class="num">+14.93M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 商品ページ：レビューが埋もれている</div>
+<p>実際に「ロワイヤルMトートバッグ」のページを測ったところ、カートに入れるボタンは上から2,094px、お客様の声（★5.00・25件）は上から25,573pxの位置にあった。ページ全体の長さが32,884pxなので、レビューはページの78%くらい下、かなり奥のほうにある。商品名の横やボタンの近くには、星の評価が出ていない。</p>
+<div class="sc-where"><b>具体的な場所：</b>商品ページの一番上（商品名・価格・カートボタンのあたり）に、星の評価が表示されていない</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/products/632735db" target="_blank" rel="noopener" class="btn btn-view">🔗 ロワイヤルMトート<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/themes/current/editor?previewPath=%2Fproducts%2F632735db" target="_blank" rel="noopener" class="btn btn-fix">🛠 このページをテーマエディタで開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">テーマエディタでこのページを開き、商品名の下あたりに「評価バッジ」のセクションを追加すると直せる。レビューの仕組み自体（Judge.me）は入っているので、追加の契約は不要。</div>
+</div>
+</div><div class="plan"><div class="hd"><span class="no">②</span><span class="nm">カートに入れたのに買わなかった人にメールで声をかける</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>カートに入れて買わなかった人761人、決済画面まで進んで買わなかった人570人（年間）</span></div>
+<div class="row"><span class="k">目標の水準</span><span>他社でよく使われている「カゴ落ちメール」の回収率（5〜16%程度）をあてはめた<br>
+保守＝カート放棄の5%＋決済放棄の10%を回収／標準＝7%＋13%／強気＝9%＋16%</span></div>
+<div class="calc formula">回収できる件数 ＝ カート放棄761 × 回収率a ＋ 決済放棄570 × 回収率b<br>増える売上 ＝ 回収できる件数 × 1回の購入金額29,412円</div>
+<div class="row"><span class="k">計算結果</span><span>保守：761×5%＋570×10%＝95.1件 → 2,795,570円<br>
+標準：761×7%＋570×13%＝127.4件 → 3,746,152円<br>
+強気：761×9%＋570×16%＝159.7件 → 4,696,734円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+2.80M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+3.75M円</div></div>
+<div><div class="lab">強気</div><div class="num">+4.70M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 カートに入れたあと、決済で離脱した人への連絡がない</div>
+<p>直近365日で、カートに商品を入れたのに買わなかった人が761人、決済画面まで進んだのに買わなかった人が570人いた。今の設定では、この人たちに「買い忘れていませんか」と連絡する仕組みがない。</p>
+<div class="sc-where"><b>具体的な場所：</b>チェックアウト設定の中の「注文を完了しなかったお客様への自動メール」の項目</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/cart" target="_blank" rel="noopener" class="btn btn-view">🔗 カート画面<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/settings/checkout" target="_blank" rel="noopener" class="btn btn-fix">🛠 チェックアウト設定を開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">「設定 → チェックアウト」の中に、注文未完了のお客様への自動メールの項目がある。有効にすれば、追加のアプリ契約なしで最初の1通は送れる（本数を増やすなら②の施策でアプリ導入を検討）。</div>
+</div>
+</div><div class="plan"><div class="hd"><span class="no">③</span><span class="nm">メールを定期的に送る仕組みを作る</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>メール経由は年間409人が来て、9件買った（買った割合2.20%＝全チャネルで一番高い）</span></div>
+<div class="row"><span class="k">目標の水準</span><span>配信リストの人数と、月2回配信でのクリック率を仮定して、メールから来る人数を計算<br>
+保守＝2,000人・クリック率2.5%／標準＝3,500人・3.0%／強気＝5,000人・3.5%</span></div>
+<div class="calc formula">メールから来る人数 ＝ リスト人数 × 年24回配信 × クリック率<br>増える注文 ＝ その人数 × 今の買った割合2.20%<br>増える売上 ＝ 増える注文 × 1回の購入金額29,412円</div>
+<div class="row"><span class="k">計算結果</span><span>保守：2,000×24×2.5%＝1,200人 → 776,638円<br>
+標準：3,500×24×3.0%＝2,520人 → 1,630,940円<br>
+強気：5,000×24×3.5%＝4,200人 → 2,718,233円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+0.78M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+1.63M円</div></div>
+<div><div class="lab">強気</div><div class="num">+2.72M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 メールでお客様に連絡する仕組みがほぼ動いていない</div>
+<p>メール経由で来た人の購入率は2.20%と一番高いのに、年間409人しかメールから来ていない（全体の0.14%）。定期的にメールを送るキャンペーンが組まれていない状態。</p>
+<div class="sc-where"><b>具体的な場所：</b>マーケティングのキャンペーン作成画面、および顧客リスト</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp" target="_blank" rel="noopener" class="btn btn-view">🔗 サイトのトップページ<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/marketing" target="_blank" rel="noopener" class="btn btn-fix">🛠 マーケティング画面を開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">「マーケティング」からキャンペーンを作成できる。まずは既存のお客様リスト（顧客管理）を確認し、月2回程度の配信から始めるのが現実的。</div>
+</div>
+</div><div class="plan"><div class="hd"><span class="no">④</span><span class="nm">検索から来る人を増やす（SEO)</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>検索経由は今36,867人・239件（買った割合0.648%）。1年前は42,280人いたので13%減っている</span></div>
+<div class="row"><span class="k">目標の水準</span><span>保守＝1年前の水準（42,280人）まで戻す／標準＝今より30%増やす／強気＝今より50%増やす</span></div>
+<div class="calc formula">増える人数 ＝ 目標の人数 － 今の人数36,867<br>増える注文 ＝ 増える人数 × 今の買った割合0.648%<br>増える売上 ＝ 増える注文 × 1回の購入金額29,412円</div>
+<div class="row"><span class="k">計算結果</span><span>保守：42,280－36,867＝5,413人 → 1,032,087円<br>
+標準：36,867×30%＝11,060人 → 2,108,810円<br>
+強気：36,867×50%＝18,434人 → 3,514,683円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.03M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+2.11M円</div></div>
+<div><div class="lab">強気</div><div class="num">+3.51M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 検索エンジンからの見つかりやすさが下がっている</div>
+<p>検索経由のセッションは1年前42,280人だったのが、直近36,867人まで13%減っている。ページのタイトルや説明文（メタ情報）が整備されているか確認が必要。</p>
+<div class="sc-where"><b>具体的な場所：</b>オンラインストアの「各種設定」内、検索エンジンリスト情報の項目</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/products/632735db" target="_blank" rel="noopener" class="btn btn-view">🔗 商品ページの例<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/online_store/preferences" target="_blank" rel="noopener" class="btn btn-fix">🛠 オンラインストアの各種設定を開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">商品ページ・コレクションページのタイトルと説明文を見直すことで、検索結果での見つかりやすさを改善できる。</div>
+</div>
+</div><div class="plan"><div class="hd"><span class="no">⑤</span><span class="nm">1回の購入金額を上げる（バッグ×小物のセット提案）</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>直近12ヶ月の注文821件、1回の購入金額29,412円</span></div>
+<div class="row"><span class="k">目標の水準</span><span>バッグと小物のセット提案などで、1回の購入金額を底上げする<br>保守＝+5%／標準＝+8%／強気＝+12%</span></div>
+<div class="calc formula">増える売上 ＝ 注文数821 × 1回の購入金額29,412円 × 上乗せ率</div>
+<div class="row"><span class="k">計算結果</span><span>保守：1,207,345円／標準：1,931,752円／強気：2,897,628円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.21M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+1.93M円</div></div>
+<div><div class="lab">強気</div><div class="num">+2.90M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 バッグを買った人に、小物をすすめる仕組みがない</div>
+<p>バッグの1回あたりの購入金額（78,850円）は財布・小物（36,058円）より高いが、カート画面に「よく一緒に買われている商品」のような提案が出ていない。</p>
+<div class="sc-where"><b>具体的な場所：</b>カート画面、および商品ページの下部</div>
+<div class="sc-actions">
+<a href="https://brooklyn.co.jp/cart" target="_blank" rel="noopener" class="btn btn-view">🔗 カート画面<span>実際のページを見る</span></a>
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/themes/current/editor?previewPath=%2Fcart" target="_blank" rel="noopener" class="btn btn-fix">🛠 カート画面をテーマエディタで開く<span>Shopify管理画面へ</span></a>
+</div>
+<div class="sc-note">テーマエディタでカート画面に関連商品セクションを追加できる。専用アプリを使う場合は追加費用が発生する。</div>
+</div>
+</div><div class="plan"><div class="hd"><span class="no">⑥</span><span class="nm">お店に来たお客様をECのお客様にする</span></div>
+<div class="calc">
+<div class="row"><span class="k">今の実績</span><span>お店（POS）の注文は年間684件、1回の購入金額50,338円。EC側のメールリストにはつながっていない</span></div>
+<div class="row"><span class="k">目標の水準</span><span>来店したお客様のうち何%がメール登録し、その何%が後日ECで買うかを仮定<br>
+保守＝登録30%×購入25%／標準＝40%×25%／強気＝50%×30%</span></div>
+<div class="calc formula">増える注文 ＝ お店の注文684 × 登録率 × 購入率<br>増える売上 ＝ 増える注文 × EC側の1回の購入金額29,412円</div>
+<div class="row"><span class="k">計算結果</span><span>保守：1,207,051円／標準：2,011,752円／強気：3,017,627円</span></div>
+</div>
+<div class="money">
+<div><div class="lab">保守</div><div class="num">+1.21M円</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+2.01M円</div></div>
+<div><div class="lab">強気</div><div class="num">+3.02M円</div></div>
+</div>
+<div class="sitecheck">
+<div class="sc-hd">🔍 直す場所</div>
+<p>お店のお客様情報とメール配信をつなげる作業のため、特定の1ページではなく運用面の整備が中心になる。</p>
+<div class="sc-actions">
+<a href="https://admin.shopify.com/store/test-brooklyn-museum/customers" target="_blank" rel="noopener" class="btn btn-fix">🛠 顧客管理を開く<span>Shopify管理画面へ</span></a>
+</div></div>
+</div><h3>全部を足すと</h3>
+<div class="card">
+<div class="tblwrap"><table>
+<tr><th>パターン</th><th class="r">増える売上</th><th class="r">EC売上（今¥24,146,901→）</th><th class="r">伸び率</th><th class="r">増える粗利益(65%)</th></tr>
+<tr><td>保守</td><td class="r">+¥11,602,985</td><td class="r"><b>¥35,749,886</b></td><td class="r">+48%</td><td class="r">+¥7,541,940</td></tr><tr><td>標準</td><td class="r">+¥21,186,224</td><td class="r"><b>¥45,333,125</b></td><td class="r">+88%</td><td class="r">+¥13,771,046</td></tr><tr><td>強気</td><td class="r">+¥31,774,249</td><td class="r"><b>¥55,921,150</b></td><td class="r">+132%</td><td class="r">+¥20,653,262</td></tr>
+</table></div>
+<p style="font-size:12.5px;color:var(--muted);margin-top:10px">
+かかる費用の目安は年間48〜509万円（③⑥はほぼ費用なし、④を外注するかどうかで幅が出る）。標準ケースの増える粗利益¥13,771,046に対し、
+費用を一番高い509万円で見ても、2.7倍のリターンになる計算。48期の営業損益は△950万円だったので、<b>標準ケースの粗利益の増え方はこの赤字を黒字に変えるのに十分な大きさ</b>。</p>
+</div>
+
+<h3>始める順番</h3>
+<div class="tblwrap"><table>
+<tr><th>時期</th><th>施策</th><th class="r">標準ケースでの増収</th><th>理由</th></tr>
+<tr><td>1ヶ月目</td><td>② カゴ落ちメール＋③ メール配信を始める</td><td class="r">+5.38M円</td><td>費用が一番小さく、効果も一番読みやすい</td></tr>
+<tr><td>1〜3ヶ月目</td><td>① Instagram経由の導線を直す</td><td class="r">+9.76M円</td><td>効果が一番大きい。ただし先に原因（流入の質か、導線か）を切り分ける</td></tr>
+<tr><td>2〜4ヶ月目</td><td>⑤ 購入金額アップ＋⑥ お店客のEC化</td><td class="r">+3.94M円</td><td>③のメール配信の土台ができてから始めるほうが効率が良い</td></tr>
+<tr><td>3〜9ヶ月目</td><td>④ 検索(SEO)を戻す</td><td class="r">+2.11M円</td><td>効果が出るまで時間がかかるので、早めに始めて後半で刈り取る</td></tr>
+</table></div>
+<p style="font-size:12.5px;color:var(--muted)">わかったこと②（6月の商戦）を踏まえると、②③の仕組みは<b>10月までに立ち上げると、年末（12月）と翌年6月の両方の商戦に間に合う</b>。</p>
+</div><div class="foot">
+出所：Shopify管理画面「test-brooklyn-museum」ストア分析（ShopifyQL）。すべて見ることとCSVの書き出しだけで確認しており、商品や設定は変更していない。<br>
+各カードの「実際のページを見る」「Shopify管理画面へ」のリンクは、実際に存在するページのURL（https://brooklyn.co.jp / https://admin.shopify.com/store/test-brooklyn-museum）。テーマエディタへのリンクは、
+管理画面にログインした状態で開くと該当ページのカスタマイズ画面が直接開く仕様（Shopify標準機能）。<br>
+用語：EC売上＝値引き後・税抜の売上。直近12ヶ月＝2025年9月〜2026年8月、1年前＝2024年9月〜2025年8月、2年前＝2023年9月〜2024年8月。
+EC＝Shopifyの販売チャネル「Online Store」。買った割合などのファネルの数字はhuman_or_bot_session='human'（ロボットを除いた）直近365日の実データ。
+新規/リピーターはEC(オンラインストア)単体・直近365日。卸売りはShopifyを通っていないため対象外。<br>
+アップサイドの試算は、実データに一般的な改善の目安をあてはめた見込みであり、その通りの結果を保証するものではない。粗利率65%は決算書46〜48期（62.5〜65.8%）に基づく仮の数字。<br>
+詳しい財務分析はauto memory「project-brooklyn-financials」を参照。
+</div></div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById(t.dataset.p).classList.add('on');
+    window.scrollTo(0,0);
+  });
+});
+</script>
+</body></html>
