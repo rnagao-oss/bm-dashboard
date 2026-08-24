@@ -7,69 +7,71 @@
 --accent:#1d4ed8;--good:#0f7a3d;--bad:#b3261e;--warn:#966b06;}
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
-background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.8}
+background:var(--bg);color:var(--ink);font-size:19px;line-height:1.8}
 .wrap{max-width:1000px;margin:0 auto;padding:0 24px 90px}
 .hdbar{position:sticky;top:0;background:var(--bg);z-index:10;padding-top:24px}
-.doc-hd .cat{font-size:11.5px;color:var(--accent);font-weight:800;letter-spacing:.06em}
-h1{font-size:22px;margin:6px 0 4px;font-weight:800}
-.meta{color:var(--muted);font-size:11.5px;padding-bottom:14px}
+.doc-hd .cat{font-size:13px;color:var(--accent);font-weight:800;letter-spacing:.06em}
+h1{font-size:30px;margin:6px 0 4px;font-weight:800}
+.meta{color:var(--muted);font-size:15px;padding-bottom:14px}
+.period{background:#eef2fb;border:1px solid #93c5fd;border-radius:8px;padding:12px 17px;margin:0 0 20px;font-size:16px;color:#1e3a5f}
+.period b{color:#1d4ed8}
 .tabs{display:flex;gap:4px;border-bottom:2px solid var(--ink);margin-bottom:0}
-.tab{padding:10px 18px;font-weight:800;font-size:13.5px;cursor:pointer;color:var(--muted);
+.tab{padding:12px 22px;font-weight:800;font-size:17px;cursor:pointer;color:var(--muted);
 border-radius:8px 8px 0 0;user-select:none}
 .tab.on{color:var(--ink);background:#fff;border:2px solid var(--ink);border-bottom:2px solid #fff;margin-bottom:-2px}
 .page{display:none;padding-top:26px}
 .page.on{display:block}
-h2{font-size:17px;font-weight:800;margin:34px 0 14px;padding:8px 0 8px 12px;
+h2{font-size:22px;font-weight:800;margin:34px 0 14px;padding:8px 0 8px 12px;
 border-left:5px solid var(--accent);background:#eef2fb}
 h2:first-child{margin-top:0}
-h3{font-size:14.5px;font-weight:800;margin:20px 0 8px}
+h3{font-size:19px;font-weight:800;margin:20px 0 8px}
 p{margin:0 0 10px}
 .summary-box{background:#0f172a;color:#fff;border-radius:12px;padding:22px 26px;margin:14px 0 8px}
-.summary-box h3{color:#fff;font-size:12.5px;letter-spacing:.04em;opacity:.75;margin:0 0 10px;text-transform:uppercase}
-.summary-box .pt{margin:9px 0;font-size:14px;padding-left:24px;text-indent:-24px}
+.summary-box h3{color:#fff;font-size:15px;letter-spacing:.04em;opacity:.75;margin:0 0 10px;text-transform:uppercase}
+.summary-box .pt{margin:11px 0;font-size:18px;padding-left:24px;text-indent:-24px}
 .summary-box .pt .no{color:#93c5fd;font-weight:800;margin-right:6px}
 .summary-box .pt b{color:#93c5fd;font-weight:800}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 6px}
-th{text-align:left;padding:8px 9px;border-bottom:2px solid var(--ink);color:var(--muted);font-weight:700;font-size:11.5px}
+table{width:100%;border-collapse:collapse;font-size:16.5px;margin:10px 0 6px}
+th{text-align:left;padding:8px 9px;border-bottom:2px solid var(--ink);color:var(--muted);font-weight:700;font-size:14.5px}
 td{padding:8px 9px;border-bottom:1px solid var(--line)}
 .r{text-align:right;font-variant-numeric:tabular-nums}
 .tblwrap{overflow-x:auto}
 .finding{border:1px solid var(--line);border-radius:10px;padding:16px 19px;margin-bottom:14px;background:#fff}
-.finding .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:5px;margin-bottom:8px}
+.finding .tag{display:inline-block;font-size:13px;font-weight:800;padding:2px 9px;border-radius:5px;margin-bottom:8px}
 .tag.discovery{background:#dbeafe;color:#1e3a8a}
-.finding h4{font-size:14.5px;margin:0 0 6px;font-weight:800}
-.finding .ev{font-size:12.5px;color:#374151;background:#f8f9fb;border-radius:6px;padding:9px 12px;margin-top:8px;border-left:3px solid var(--accent)}
-.conf{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px}
+.finding h4{font-size:19px;margin:0 0 6px;font-weight:800}
+.finding .ev{font-size:16px;color:#374151;background:#f8f9fb;border-radius:6px;padding:9px 12px;margin-top:8px;border-left:3px solid var(--accent)}
+.conf{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px}
 .conf.high{background:#dcfce7;color:var(--good)}
 .conf.mid{background:#fef3c7;color:var(--warn)}
 .plan{background:#fff;border:1px solid var(--line);border-radius:10px;padding:17px 19px;margin-bottom:14px}
 .plan .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
-.plan .no{font-weight:800;color:var(--accent);font-size:16px}
-.plan .nm{font-weight:800;font-size:14px}
-.calc{background:#f8f9fb;border:1px dashed #c7ccd6;border-radius:8px;padding:12px 14px;margin:10px 0;font-size:12.6px}
+.plan .no{font-weight:800;color:var(--accent);font-size:21px}
+.plan .nm{font-weight:800;font-size:18px}
+.calc{background:#f8f9fb;border:1px dashed #c7ccd6;border-radius:8px;padding:14px 16px;margin:10px 0;font-size:16px}
 .calc .row{display:flex;gap:8px;margin:5px 0}
-.calc .k{flex-shrink:0;width:88px;color:var(--muted);font-weight:700;font-size:11.3px;padding-top:1px}
-.calc .formula{font-family:ui-monospace,monospace;background:#fff;border:1px solid var(--line);border-radius:5px;padding:6px 9px;font-size:12px;margin:6px 0}
+.calc .k{flex-shrink:0;width:104px;color:var(--muted);font-weight:700;font-size:14.5px;padding-top:1px}
+.calc .formula{font-family:ui-monospace,monospace;background:#fff;border:1px solid var(--line);border-radius:5px;padding:8px 11px;font-size:15.5px;margin:6px 0}
 .money{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 4px}
 .money div{border:1px solid var(--line);border-radius:6px;padding:8px 9px;text-align:center}
 .money .std{background:#eef2fb;border-color:#93c5fd}
-.money .lab{font-size:10px;color:var(--muted)}
-.money .num{font-size:15px;font-weight:800}
+.money .lab{font-size:13px;color:var(--muted)}
+.money .num{font-size:20px;font-weight:800}
 .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 19px;margin-bottom:14px}
-.foot{margin-top:38px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.9}
+.foot{margin-top:38px;padding-top:15px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted);line-height:1.9}
 
 /* --- サイトの実際の問題箇所カード --- */
 .sitecheck{border:1.5px solid #fca5a5;background:#fff8f7;border-radius:10px;padding:15px 18px;margin:12px 0}
-.sc-hd{font-weight:800;font-size:13.5px;margin-bottom:6px;color:#7f1d1d}
-.sitecheck p{font-size:12.8px;color:#374151}
-.sc-where{font-size:12.3px;background:#fff;border-radius:6px;padding:8px 11px;margin:8px 0;border:1px solid #f3d0d0}
+.sc-hd{font-weight:800;font-size:17px;margin-bottom:6px;color:#7f1d1d}
+.sitecheck p{font-size:16px;color:#374151}
+.sc-where{font-size:15.5px;background:#fff;border-radius:6px;padding:8px 11px;margin:8px 0;border:1px solid #f3d0d0}
 .sc-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
 .btn{display:flex;flex-direction:column;gap:1px;text-decoration:none;padding:8px 14px;border-radius:8px;
-font-size:12.5px;font-weight:700;flex:1;min-width:180px}
-.btn span{font-weight:400;font-size:10.5px;opacity:.85}
+font-size:16px;font-weight:700;flex:1;min-width:180px}
+.btn span{font-weight:400;font-size:13px;opacity:.85}
 .btn-view{background:#1d4ed8;color:#fff}
 .btn-fix{background:#0f7a3d;color:#fff}
-.sc-note{font-size:11.5px;color:#7f1d1d;margin-top:9px;padding-top:9px;border-top:1px dashed #f3d0d0}
+.sc-note{font-size:14.5px;color:#7f1d1d;margin-top:9px;padding-top:9px;border-top:1px dashed #f3d0d0}
 </style></head><body><div class="wrap">
 
 <div class="hdbar">
@@ -84,6 +86,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 </div>
 </div>
 <div class="page on" id="p1">
+<div class="period">📅 <b>分析対象期間</b>：全体の売上トレンドは <b>2021年8月〜2026年8月</b>（Shopifyに記録された全期間）。流入経路・購入ファネル・新規/リピーターの分析は <b>2025年8月25日〜2026年8月24日（直近365日）</b>。前年との比較は <b>直近12ヶ月（2025年9月〜2026年8月）</b> と <b>前年同期（2024年9月〜2025年8月）</b> の対比。</div>
 <h2>結論（3つ）</h2>
 <div class="summary-box">
 <h3>まず結論から</h3>
@@ -107,6 +110,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 ところが1年前→直近は「サイトに来る人は倍になったが、買う割合は半分に下がった」という逆の動きになり、売上は-7%に変わった。
 <b>人数を増やしたのに、質が落ちて売上が下がった</b>——これが最初にわかったこと。</p>
 </div><div class="page" id="p2">
+<div class="period">📅 <b>分析対象期間</b>：全体の売上トレンドは <b>2021年8月〜2026年8月</b>（Shopifyに記録された全期間）。流入経路・購入ファネル・新規/リピーターの分析は <b>2025年8月25日〜2026年8月24日（直近365日）</b>。前年との比較は <b>直近12ヶ月（2025年9月〜2026年8月）</b> と <b>前年同期（2024年9月〜2025年8月）</b> の対比。</div>
 <h2>示唆（データからわかったこと）</h2>
 
 <div class="finding"><span class="tag discovery">わかったこと①</span><span class="conf high">確かさ：高い</span>
@@ -116,6 +120,15 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 ロボット（bot）によるアクセスはほとんどなく（1,868件だけ）、ほぼ全員が本物の人。
 それなのに、Instagram経由で実際に買った人の割合は<b>0.011%</b>しかなく、ダイレクト経由（0.816%）の74分の1で、全部のチャネルの中で一番低い。</p>
 <div class="tblwrap"><table><tr><th>流入経路</th><th class="r">来た人数</th><th class="r">カートに入れた</th><th class="r">決済画面まで進んだ</th><th class="r">買った</th></tr><tr><td>ソーシャル</td><td class="r">175,867</td><td class="r">308</td><td class="r">70</td><td class="r">20</td></tr><tr><td>ダイレクト</td><td class="r">67,198</td><td class="r">1,151</td><td class="r">879</td><td class="r">548</td></tr><tr><td>検索</td><td class="r">36,867</td><td class="r">641</td><td class="r">414</td><td class="r">239</td></tr><tr><td>不明</td><td class="r">1,989</td><td class="r">38</td><td class="r">19</td><td class="r">7</td></tr><tr><td>メール</td><td class="r">409</td><td class="r">16</td><td class="r">11</td><td class="r">9</td></tr></table></div>
+<div class="ev" style="border-left-color:#0f7a3d">
+<b>流入経路の定義（Shopifyの分類）</b><br>
+<b>ソーシャル</b>＝Instagram・Facebook・X等のSNSアプリやSNS内のリンクから来た訪問（このストアではInstagramが大半）<br>
+<b>ダイレクト</b>＝どこから来たかの情報が付かない訪問。URLを直接入力・ブックマーク・アプリ内ブラウザ・QRコードなど。指名で来る既存のお客様が多く含まれる<br>
+<b>検索</b>＝Google・Yahoo!などの検索結果から来た訪問（自然検索。検索広告は別扱い）<br>
+<b>メール</b>＝メール本文の中のリンクから来た訪問<br>
+<b>不明</b>＝上のどれにも判定できなかった訪問<br>
+<span style="font-size:14px">※すべてロボット（bot）を除いた実在ユーザーのみ・直近365日（2025年8月25日〜2026年8月24日）</span>
+</div>
 <div class="ev">わかったこと：たくさんの人に見てもらえているのに、買うところまでたどり着けていない。広告や投稿の「量」を増やす前に、
 「買ってもらう仕組み」を直すほうが先。実際にサイトを見て、どこが原因かを下で確認する。</div>
 <div class="sitecheck">
@@ -202,6 +215,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 </div>
 </div>
 </div><div class="page" id="p3">
+<div class="period">📅 <b>分析対象期間</b>：全体の売上トレンドは <b>2021年8月〜2026年8月</b>（Shopifyに記録された全期間）。流入経路・購入ファネル・新規/リピーターの分析は <b>2025年8月25日〜2026年8月24日（直近365日）</b>。前年との比較は <b>直近12ヶ月（2025年9月〜2026年8月）</b> と <b>前年同期（2024年9月〜2025年8月）</b> の対比。</div>
 <h2>課題（優先順位）</h2>
 <p>「示唆（わかったこと）」から、直す順番をつけると次のようになる。</p>
 <div class="tblwrap"><table>
@@ -216,6 +230,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 <p style="margin-top:14px;color:var(--muted);font-size:12.5px">この順番に沿って、次のページで具体的な改善策とその効果の見込みをまとめている。
 各施策のカードには、実際に直すべきページへのリンクを付けている。</p>
 </div><div class="page" id="p4">
+<div class="period">📅 <b>分析対象期間</b>：全体の売上トレンドは <b>2021年8月〜2026年8月</b>（Shopifyに記録された全期間）。流入経路・購入ファネル・新規/リピーターの分析は <b>2025年8月25日〜2026年8月24日（直近365日）</b>。前年との比較は <b>直近12ヶ月（2025年9月〜2026年8月）</b> と <b>前年同期（2024年9月〜2025年8月）</b> の対比。</div>
 <h2>改善施策とアップサイド（増える見込みの金額）</h2>
 <p>それぞれの施策の効果は、①Shopifyで確認した「今の実績」に、②業界でよく使われる目安や自社の一番良いチャネルの実績を「目標」として当てはめ、
 ③かけ算・引き算だけの計算式で出している。保守・標準・強気の3パターンで幅を持たせている。
@@ -231,9 +246,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 強気：175,867×0.30%－20＝508件 → 14,929,344円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥4,584,294</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥9,756,819</div></div>
-<div><div class="lab">強気</div><div class="num">+¥14,929,344</div></div>
+<div><div class="lab">保守</div><div class="num">+¥4,584,294</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥9,756,819</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥14,929,344</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 商品ページ：レビューが埋もれている</div>
@@ -256,9 +271,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 強気：761×9%＋570×16%＝159.7件 → 4,696,734円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥2,795,570</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥3,746,152</div></div>
-<div><div class="lab">強気</div><div class="num">+¥4,696,734</div></div>
+<div><div class="lab">保守</div><div class="num">+¥2,795,570</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥3,746,152</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥4,696,734</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 カートに入れたあと、決済で離脱した人への連絡がない</div>
@@ -281,9 +296,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 強気：5,000×24×3.5%＝4,200人 → 2,718,233円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥776,638</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥1,630,940</div></div>
-<div><div class="lab">強気</div><div class="num">+¥2,718,233</div></div>
+<div><div class="lab">保守</div><div class="num">+¥776,638</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥1,630,940</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥2,718,233</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 メールでお客様に連絡する仕組みがほぼ動いていない</div>
@@ -305,9 +320,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 強気：36,867×50%＝18,434人 → 3,514,683円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥1,032,087</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥2,108,810</div></div>
-<div><div class="lab">強気</div><div class="num">+¥3,514,683</div></div>
+<div><div class="lab">保守</div><div class="num">+¥1,032,087</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥2,108,810</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥3,514,683</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 検索エンジンからの見つかりやすさが下がっている</div>
@@ -327,9 +342,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 <div class="row"><span class="k">計算結果</span><span>保守：1,207,345円／標準：1,931,752円／強気：2,897,628円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥1,207,345</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥1,931,752</div></div>
-<div><div class="lab">強気</div><div class="num">+¥2,897,628</div></div>
+<div><div class="lab">保守</div><div class="num">+¥1,207,345</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥1,931,752</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥2,897,628</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 バッグを買った人に、小物をすすめる仕組みがない</div>
@@ -350,9 +365,9 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 <div class="row"><span class="k">計算結果</span><span>保守：1,207,051円／標準：2,011,752円／強気：3,017,627円</span></div>
 </div>
 <div class="money">
-<div><div class="lab">保守</div><div class="num">+¥1,207,051</div></div>
-<div class="std"><div class="lab">標準</div><div class="num">+¥2,011,752</div></div>
-<div><div class="lab">強気</div><div class="num">+¥3,017,627</div></div>
+<div><div class="lab">保守</div><div class="num">+¥1,207,051</div><div class="lab">／年</div></div>
+<div class="std"><div class="lab">標準</div><div class="num">+¥2,011,752</div><div class="lab">／年</div></div>
+<div><div class="lab">強気</div><div class="num">+¥3,017,627</div><div class="lab">／年</div></div>
 </div>
 <div class="sitecheck">
 <div class="sc-hd">🔍 直す場所</div>
@@ -363,7 +378,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 </div><h3>全部を足すと</h3>
 <div class="card">
 <div class="tblwrap"><table>
-<tr><th>パターン</th><th class="r">増える売上</th><th class="r">EC売上（今¥24,146,901→）</th><th class="r">伸び率</th><th class="r">増える粗利益(65%)</th></tr>
+<tr><th>パターン</th><th class="r">増える売上／年</th><th class="r">EC売上（今¥24,146,901→）</th><th class="r">伸び率</th><th class="r">増える粗利益／年(65%)</th></tr>
 <tr><td>保守</td><td class="r">+¥11,602,985</td><td class="r"><b>¥35,749,886</b></td><td class="r">+48%</td><td class="r">+¥7,541,940</td></tr><tr><td>標準</td><td class="r">+¥21,186,224</td><td class="r"><b>¥45,333,125</b></td><td class="r">+88%</td><td class="r">+¥13,771,046</td></tr><tr><td>強気</td><td class="r">+¥31,774,249</td><td class="r"><b>¥55,921,150</b></td><td class="r">+132%</td><td class="r">+¥20,653,262</td></tr>
 </table></div>
 <p style="font-size:12.5px;color:var(--muted);margin-top:10px">
@@ -373,7 +388,7 @@ font-size:12.5px;font-weight:700;flex:1;min-width:180px}
 
 <h3>始める順番</h3>
 <div class="tblwrap"><table>
-<tr><th>時期</th><th>施策</th><th class="r">標準ケースでの増収</th><th>理由</th></tr>
+<tr><th>時期</th><th>施策</th><th class="r">標準ケースでの増収／年</th><th>理由</th></tr>
 <tr><td>1ヶ月目</td><td>② カゴ落ちメール＋③ メール配信を始める</td><td class="r">+¥5,377,092</td><td>費用が一番小さく、効果も一番読みやすい</td></tr>
 <tr><td>1〜3ヶ月目</td><td>① Instagram経由の導線を直す</td><td class="r">+¥9,756,819</td><td>効果が一番大きい。ただし先に原因（流入の質か、導線か）を切り分ける</td></tr>
 <tr><td>2〜4ヶ月目</td><td>⑤ 購入金額アップ＋⑥ お店客のEC化</td><td class="r">+¥3,943,504</td><td>③のメール配信の土台ができてから始めるほうが効率が良い</td></tr>
