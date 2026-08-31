@@ -187,7 +187,7 @@ def build_section():
         f'{START}\n'
         f'{style}\n'
         f'<h2 class="sec">セッション数とEC注文数（CV）トラッキング '
-        f'<span class="tag">2025年1月〜（月次・週次）／2026年8月31日〜（日次）</span></h2>\n'
+        f'<span class="tag">2025年1月〜（月次・週次）／2026年8月20日〜（日次）</span></h2>\n'
         f'<div class="card">\n'
         f'{tabs}\n'
         f'{panel_month}\n{panel_week}\n{panel_day}\n'
